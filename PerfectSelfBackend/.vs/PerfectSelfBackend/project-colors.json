@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "309cac91-408a-44eb-a447-f351cfa9a5e5": {
+      "ProjectGuid": "309cac91-408a-44eb-a447-f351cfa9a5e5",
+      "DisplayName": "PerfectSelf.WebAPI",
+      "ColorIndex": 0
+    },
+    "34b554be-6633-4a3c-956b-1eb1e91a11e3": {
+      "ProjectGuid": "34b554be-6633-4a3c-956b-1eb1e91a11e3",
+      "DisplayName": "PerfectSelf.Backend",
+      "ColorIndex": 1
+    },
+    "2e74e204-3880-4d24-92ae-99affcaa09aa": {
+      "ProjectGuid": "2e74e204-3880-4d24-92ae-99affcaa09aa",
+      "DisplayName": "PerfectSelf.Core",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}
