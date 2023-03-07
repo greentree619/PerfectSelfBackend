@@ -1,3 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using PerfectSelf.WebAPI;
+using PerfectSelf.WebAPI.Context;
+//using System.Configuration;
+
+var configBuilder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
+IConfiguration _configuration = configBuilder.Build();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +16,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<PerfectSelfContext>(options => options.UseSqlServer(_configuration.GetConnectionString("PerfectSelfConnect")));
 
 var app = builder.Build();
 
@@ -14,6 +25,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{   
+    PerfectSelfContext ctx = scope.ServiceProvider.GetRequiredService<PerfectSelfContext>();
+    ctx.Seed();// Here PerfectSelfContext has been initialized
 }
 
 app.UseHttpsRedirection();
