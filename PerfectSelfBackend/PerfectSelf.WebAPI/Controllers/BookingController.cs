@@ -4,16 +4,16 @@ namespace PerfectSelf.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class BookingController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<BookingController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public BookingController(ILogger<BookingController> logger)
         {
             _logger = logger;
         }

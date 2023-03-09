@@ -8,11 +8,11 @@
     {
         public static void Seed(this PerfectSelfContext dbContext)
         {
-            if (!dbContext.Employees.Any())
+            if (!dbContext.Users.Any())
             {
-                dbContext.Employees.Add(new Employee
+                dbContext.Users.Add(new User
                 {
-                    EmployeeName = "Employee001",
+                    UserName = "User001",
                     Gender = "Male",
                     DateOfBirth = "01-01-1990",
                     Nationality = "Indian",
@@ -21,9 +21,9 @@
                     PermanentAddress = "Permanent Address",
                     PINCode = "560078"
                 });
-                dbContext.Employees.Add(new Employee
+                dbContext.Users.Add(new User
                 {
-                    EmployeeName = "Employee002",
+                    UserName = "User002",
                     Gender = "Female",
                     DateOfBirth = "01-01-1994",
                     Nationality = "Indian",
@@ -32,9 +32,9 @@
                     PermanentAddress = "Permanent Address",
                     PINCode = "560078"
                 });
-                dbContext.Employees.Add(new Employee
+                dbContext.Users.Add(new User
                 {
-                    EmployeeName = "Employee003",
+                    UserName = "User003",
                     Gender = "Female",
                     DateOfBirth = "01-01-1995",
                     Nationality = "Indian",
