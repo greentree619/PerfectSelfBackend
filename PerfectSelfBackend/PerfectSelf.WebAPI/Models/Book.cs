@@ -3,12 +3,12 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Tape")]
-    public class Tape : PerfectSelfBase
+    [Table("Book")]
+    public class Book : PerfectSelfBase
     {
+        public int ActorId { get; set; }
         public int ReaderId { get; set; }
-        public string TapeName { get; set; }
-        public string BucketName { get; set; }
-        public string TapeKey { get; set; }
+        public DateTime BookTime { get; set; }
+        public String ScriptFile { get; set; }
     }
 }
