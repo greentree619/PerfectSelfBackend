@@ -10,41 +10,27 @@
         {
             if (!dbContext.Users.Any())
             {
-                //dbContext.Users.Add(new User
-                //{
-                //    UserName = "User001",
-                //    //Gender = "Male",
-                //    DateOfBirth = "01-01-1990",
-                //    Nationality = "Indian",
-                //    City = "Bangalore",
-                //    CurrentAddress = "Current Address",
-                //    PermanentAddress = "Permanent Address",
-                //    //PINCode = "560078"
-                //});
-                //dbContext.Users.Add(new User
-                //{
-                //    UserName = "User002",
-                //    //Gender = "Female",
-                //    DateOfBirth = "01-01-1994",
-                //    Nationality = "Indian",
-                //    City = "Bangalore",
-                //    CurrentAddress = "Current Address",
-                //    PermanentAddress = "Permanent Address",
-                //    //PINCode = "560078"
-                //});
-                //dbContext.Users.Add(new User
-                //{
-                //    UserName = "User003",
-                //    //Gender = "Female",
-                //    DateOfBirth = "01-01-1995",
-                //    Nationality = "Indian",
-                //    City = "Bangalore",
-                //    CurrentAddress = "Current Address",
-                //    PermanentAddress = "Permanent Address",
-                //    //PINCode = "560078"
-                //});
-
-                //dbContext.SaveChanges();
+                dbContext.Users.Add(new User
+                {
+                    UserName = "Admin",
+                    Gender = PerfectSelfBase.Gender.Male,
+                    DateOfBirth = "03-16-2023",
+                    Nationality = "USA",
+                    City = "City",
+                    CurrentAddress = "Current Address",
+                    PermanentAddress = "Permanent Address"
+                });
+                dbContext.Users.Add(new User
+                {
+                    UserName = "tester",
+                    Gender = PerfectSelfBase.Gender.Male,
+                    DateOfBirth = "03-16-2023",
+                    Nationality = "USA",
+                    City = "City",
+                    CurrentAddress = "Current Address",
+                    PermanentAddress = "Permanent Address"
+                });
+                dbContext.SaveChanges();
             }
         }
     }
