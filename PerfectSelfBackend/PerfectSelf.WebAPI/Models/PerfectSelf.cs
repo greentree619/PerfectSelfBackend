@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("PerfectSelf")]
-    public class PerfectSelf: PerfectSelfBase
+    public class PerfectSelfVersion: PerfectSelfBase
     {
         public int MajorVersion { get; set; }
 

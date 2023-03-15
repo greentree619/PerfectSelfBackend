@@ -8,6 +8,7 @@
     {
         public enum AccountType
         {
+            Admin,
             Actor,
             Reader,
             Nothing
