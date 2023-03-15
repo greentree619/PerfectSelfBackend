@@ -12,7 +12,27 @@
 
         }
 
-        public DbSet<Employee> Employees { get; set; }
+        protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+        {
+
+            builder.Properties<DateOnly>()
+                .HaveConversion<DateOnlyConverter>()
+                .HaveColumnType("date");
+
+            builder.Properties<TimeOnly>()
+                .HaveConversion<TimeOnlyConverter>()
+                .HaveColumnType("time");
+
+            base.ConfigureConventions(builder);
+
+        }
+
+        public DbSet<Tape> Tapes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ActorProfile> ActorProfiles { get; set; }
+        public DbSet<ReaderProfile> ReaderProfiles { get; set; }
+        public DbSet<Availability> Availabilities { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<PerfectSelf> PerfectSelfs { get; set; }
     }
 }
