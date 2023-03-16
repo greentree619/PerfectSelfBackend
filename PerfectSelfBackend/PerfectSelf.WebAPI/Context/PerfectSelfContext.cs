@@ -33,6 +33,6 @@
         public DbSet<ReaderProfile> ReaderProfiles { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<PerfectSelf> PerfectSelfs { get; set; }
+        public DbSet<PerfectSelfVersion> PerfectSelfVersions { get; set; }
     }
 }
