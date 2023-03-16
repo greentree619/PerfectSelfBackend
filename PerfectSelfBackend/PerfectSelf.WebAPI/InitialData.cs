@@ -12,23 +12,35 @@
             {
                 dbContext.Users.Add(new User
                 {
+                    UserType = User.AccountType.Admin,
                     UserName = "Admin",
+                    Email = "admin@gmail.com",
+                    Password = "123456",
+                    FirstName = "First Name",
+                    LastName = "Last Name",
                     Gender = PerfectSelfBase.Gender.Male,
                     DateOfBirth = "03-16-2023",
                     Nationality = "USA",
                     City = "City",
                     CurrentAddress = "Current Address",
-                    PermanentAddress = "Permanent Address"
+                    PermanentAddress = "Permanent Address",
+                    PhoneNumber = "1234567890",
                 });
                 dbContext.Users.Add(new User
                 {
+                    Email = "tester@gmail.com",
+                    Password = "123456",
+                    FirstName = "First Name",
+                    LastName = "Last Name",
                     UserName = "tester",
+                    UserType = User.AccountType.Developer,
                     Gender = PerfectSelfBase.Gender.Male,
                     DateOfBirth = "03-16-2023",
                     Nationality = "USA",
                     City = "City",
                     CurrentAddress = "Current Address",
-                    PermanentAddress = "Permanent Address"
+                    PermanentAddress = "Permanent Address",
+                    PhoneNumber = "1234567890",
                 });
                 dbContext.SaveChanges();
             }

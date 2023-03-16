@@ -9,6 +9,8 @@
         public enum AccountType
         {
             Admin,
+            Developer,
+            Tester,
             Actor,
             Reader,
             Nothing
