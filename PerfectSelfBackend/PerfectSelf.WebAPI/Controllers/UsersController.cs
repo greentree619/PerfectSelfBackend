@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PerfectSelf.WebAPI.Common;
 using PerfectSelf.WebAPI.Context;
 using PerfectSelf.WebAPI.Models;
 
@@ -25,7 +26,12 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            List<User> userList = await _context.Users.ToListAsync();
+            foreach (var usr in userList)
+            {
+                usr.Password = "";
+            }
+            return userList;
         }
 
         // GET: api/Users/5
@@ -37,6 +43,10 @@ namespace PerfectSelf.WebAPI.Controllers
             if (user == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                user.Password = "";
             }
 
             return user;
@@ -82,6 +92,46 @@ namespace PerfectSelf.WebAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<User>> LoginUser(LoginUser user)
+        {
+            var userdetails = await _context.Users
+            .SingleOrDefaultAsync(m => m.Email == user.Email && m.Password == user.Password);
+            if (userdetails == null)
+            {
+                return Ok(new { result = false, user= new { } });
+            }
+
+            userdetails.IsLogin = true;
+            userdetails.Token = Common.Global.GenToken();
+            _context.Users.Update(userdetails);
+            _context.SaveChanges();
+            Global.onlineAllUsers[userdetails.Token] = userdetails.Id;
+
+            userdetails.Password = "";
+            return Ok(new { result=true, user=userdetails });
+        }
+
+        [HttpPost("Logout")]
+        public async Task<ActionResult<User>> LogoutUser(String tokenParam)
+        {
+            if (Global.onlineAllUsers[tokenParam] != null)
+            {
+                var userId = Global.onlineAllUsers[tokenParam].ToString();
+                var userdetails = await _context.Users
+                .SingleOrDefaultAsync( m => m.Id == Convert.ToInt32(userId) );
+                if (userdetails != null)
+                {
+                    userdetails.IsLogin = false;
+                    _context.Users.Update(userdetails);
+                    _context.SaveChanges();
+                    Global.onlineAllUsers[userdetails.Token] = null;
+                    return Ok(new { result = true });
+                }
+            }
+            return Ok(new { result = false });
         }
 
         // DELETE: api/Users/5
