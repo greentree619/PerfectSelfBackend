@@ -25,6 +25,8 @@
                     CurrentAddress = "Current Address",
                     PermanentAddress = "Permanent Address",
                     PhoneNumber = "1234567890",
+                    IsLogin = false,
+                    Token = "",
                 });
                 dbContext.Users.Add(new User
                 {
@@ -41,6 +43,8 @@
                     CurrentAddress = "Current Address",
                     PermanentAddress = "Permanent Address",
                     PhoneNumber = "1234567890",
+                    IsLogin = false,
+                    Token = "",
                 });
                 dbContext.SaveChanges();
             }

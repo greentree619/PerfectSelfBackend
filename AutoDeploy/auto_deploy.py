@@ -128,7 +128,7 @@ def task():
     global alreadyExist
     # report a message
     print("Hello from the new process")
-    cmd = 'cd '+extractBPath + ' & "C:\\Program Files\\dotnet\\dotnet" ' + extractBPath+'PerfectSelf.WebAPI.dll --urls=http://0.0.0.0:6000';
+    cmd = 'cd '+extractBPath + ' & "C:\\Program Files\\dotnet\\dotnet" ' + extractBPath+'PerfectSelf.WebAPI.dll --urls=http://0.0.0.0:5001';
     print(cmd);
     try:
         alreadyExist = True
