@@ -24,7 +24,7 @@
         }
 
         public String Title { get; set; }
-        public int ReaderId { get; set; }
+        public Guid ReaderUid { get; set; }
         public double HourlyPrice { get; set; }
         public _VoiceType VoiceType { get; set; }
         public _Others Others { get; set; }

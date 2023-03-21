@@ -11,7 +11,7 @@
             Nothing
         }
         public String Title { get; set; }
-        public int ActorId { get; set; }
+        public Guid ActorUid { get; set; }
         public String AgeRange { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }

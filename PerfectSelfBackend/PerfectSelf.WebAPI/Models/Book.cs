@@ -6,8 +6,8 @@
     [Table("Book")]
     public class Book : PerfectSelfBase
     {
-        public int ActorId { get; set; }
-        public int ReaderId { get; set; }
+        public Guid ActorUid { get; set; }
+        public Guid ReaderUid { get; set; }
         public DateTime BookTime { get; set; }
         public String ScriptFile { get; set; }
     }

@@ -1,9 +1,11 @@
 ﻿namespace PerfectSelf.WebAPI.Models
 {
+    using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("User")]
+    [Index(nameof(Email), IsUnique = true)]
     public class User: PerfectSelfBase
     {
         public enum AccountType
@@ -16,8 +18,10 @@
             Nothing
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Uid { get; set; } = Guid.NewGuid();
         public AccountType UserType { get; set; }
-        public string UserName { get; set; }
+        public string UserName { get; set; }        
         public string Email { get; set; }
         public string Password { get; set; }
         public string FirstName { get; set; }

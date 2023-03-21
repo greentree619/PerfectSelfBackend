@@ -6,7 +6,7 @@
     [Table("Tape")]
     public class Tape : PerfectSelfBase
     {
-        public int ReaderId { get; set; }
+        public Guid ReaderUid { get; set; }
         public string TapeName { get; set; }
         public string BucketName { get; set; }
         public string TapeKey { get; set; }
