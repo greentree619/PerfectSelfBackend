@@ -28,6 +28,13 @@ namespace PerfectSelf.WebAPI.Controllers
             return await _context.ReaderProfiles.ToListAsync();
         }
 
+        [HttpGet("ReaderList")]
+        public IActionResult GetReaderList()
+        {
+            var items = _context.ReaderLists.ToList();
+            return Ok(items);
+        }
+
         // GET: api/ReaderProfiles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ReaderProfile>> GetReaderProfile(int id)
