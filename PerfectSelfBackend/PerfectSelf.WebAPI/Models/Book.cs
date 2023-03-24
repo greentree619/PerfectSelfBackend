@@ -8,7 +8,8 @@
     {
         public Guid ActorUid { get; set; }
         public Guid ReaderUid { get; set; }
-        public DateTime BookTime { get; set; }
+        public DateTime BookStartTime { get; set; }
+        public DateTime BookEndTime { get; set; }
         public String ScriptFile { get; set; }
     }
 }

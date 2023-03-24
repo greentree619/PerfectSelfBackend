@@ -24,7 +24,21 @@
                 .HaveColumnType("time");
 
             base.ConfigureConventions(builder);
+        }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Ignore<ReaderList>();
+            modelBuilder.Ignore<BookList>();
+            modelBuilder
+               .Entity<ReaderList>()
+               .ToView("readerlist")
+               .HasKey(t => t.Uid);
+            modelBuilder
+               .Entity<BookList>()
+               .ToView("booklist")
+               .HasKey(t => t.Id);
         }
 
         public DbSet<Tape> Tapes { get; set; }
@@ -34,5 +48,7 @@
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<PerfectSelfVersion> PerfectSelfVersions { get; set; }
+        public DbSet<ReaderList> ReaderLists { get; set; }
+        public DbSet<BookList> BookLists { get; set; }
     }
 }

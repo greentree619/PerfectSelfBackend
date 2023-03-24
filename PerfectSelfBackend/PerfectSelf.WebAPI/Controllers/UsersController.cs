@@ -52,6 +52,13 @@ namespace PerfectSelf.WebAPI.Controllers
             return user;
         }
 
+        [HttpGet("ReaderList")]
+        public IActionResult GetReaderList()
+        {
+            var items = _context.ReaderLists.ToList();
+            return Ok(items);
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
