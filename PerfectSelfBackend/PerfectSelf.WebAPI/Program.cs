@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PerfectSelf.WebAPI;
+using PerfectSelf.WebAPI.Common;
 using PerfectSelf.WebAPI.Context;
 //using System.Configuration;
 
@@ -12,7 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                //options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+                //options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+            });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

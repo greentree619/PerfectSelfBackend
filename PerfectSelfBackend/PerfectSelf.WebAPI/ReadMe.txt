@@ -2,12 +2,11 @@
 Go
 Create VIEW [dbo].[ReaderList]
 AS
-SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid, dbo.Availability.Date, 
-                  dbo.Availability.[From], dbo.Availability.[To]
+SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid, min(dbo.Availability.Date) as Date
 FROM     dbo.[User] LEFT OUTER JOIN
-                  dbo.ReaderProfile ON dbo.[User].Uid = dbo.ReaderProfile.ReaderUid LEFT OUTER JOIN
-                  dbo.Availability ON dbo.[User].Uid = dbo.Availability.ReaderUid
-WHERE  (dbo.[User].UserType = 4)
+                  dbo.ReaderProfile ON dbo.[User].Uid = dbo.ReaderProfile.ReaderUid LEFT JOIN
+                  dbo.Availability ON (dbo.[User].Uid = dbo.Availability.ReaderUid and (dbo.Availability.Date >= '3/20/2023 4:28:42 AM'))
+WHERE  (dbo.[User].UserType = 4 ) group by dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid
 GO
 
 Drop VIEW [dbo].[BookList]

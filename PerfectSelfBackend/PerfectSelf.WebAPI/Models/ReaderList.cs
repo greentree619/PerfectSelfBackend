@@ -15,8 +15,6 @@
         public User.Gender Gender { get; set; }
         public Boolean IsLogin { get; set; }
         public double? HourlyPrice { get; set; }
-        public DateOnly? Date { get; set; }
-        public TimeOnly? From { get; set; }
-        public TimeOnly? To { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

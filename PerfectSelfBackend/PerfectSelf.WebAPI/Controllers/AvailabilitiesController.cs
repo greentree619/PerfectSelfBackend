@@ -28,6 +28,21 @@ namespace PerfectSelf.WebAPI.Controllers
             return await _context.Availabilities.ToListAsync();
         }
 
+        // GET: api/Availabilities
+        [HttpGet("AllByUid/{uid}")]
+        public async Task<ActionResult<IEnumerable<Availability>>> GetAvailabilities(String uid)
+        {
+            return await _context.Availabilities.Where(row => uid == row.ReaderUid.ToString()).ToListAsync();
+        }
+
+        [HttpGet("UpcomingByUid/{uid}/{nowDT}")]
+        public async Task<ActionResult<IEnumerable<Availability>>> GetUpcomingAvailabilities(String uid, String nowDT)
+        {
+            DateTime dt;
+            if( !DateTime.TryParse(nowDT, out dt) ) dt = DateTime.Now;
+            return await _context.Availabilities.Where(row => (uid == row.ReaderUid.ToString() && row.Date >= dt)).ToListAsync();
+        }
+
         // GET: api/Availabilities/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Availability>> GetAvailability(int id)
