@@ -54,13 +54,20 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReaderProfile(int id, ReaderProfile readerProfile)
         {
-            if (id != readerProfile.Id)
+            var reader = await _context.ReaderProfiles.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (reader == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+            // don't update if the field is null
+            if (readerProfile.About == null) readerProfile.About = reader.About;
+            if (readerProfile.HourlyPrice == null) readerProfile.HourlyPrice = reader.HourlyPrice;
+            if (readerProfile.Skills == null) readerProfile.Skills = reader.Skills;
+            if (readerProfile.Title == null) readerProfile.Title = reader.Title;
 
-            _context.Entry(readerProfile).State = EntityState.Modified;
-
+            //_context.Entry(reader).State = EntityState.Modified;
+            _context.Entry(reader).CurrentValues.SetValues(readerProfile);
             try
             {
                 await _context.SaveChangesAsync();
