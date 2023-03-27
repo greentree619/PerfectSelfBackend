@@ -49,6 +49,27 @@ namespace PerfectSelf.WebAPI.Controllers
             return readerProfile;
         }
 
+        [HttpGet("Detail/{uid}")]
+        public async Task<ActionResult> GetReaderDetailProfile(String uid)
+        {
+            var ReaderDetailProfile = (from users in _context.Users
+                                   join profiles in _context.ReaderProfiles
+                                   on users.Uid equals profiles.ReaderUid
+                                   where users.Uid.ToString() == uid
+                                   select new
+                                   {
+                                       users.Uid,
+                                       users.UserName,
+                                       profiles.Title,
+                                       profiles.HourlyPrice,
+                                       profiles.Others,
+                                       profiles.VoiceType,
+                                       profiles.About,
+                                       profiles.Skills
+                                    }).Single();
+            return Ok(ReaderDetailProfile);
+        }
+
         // PUT: api/ReaderProfiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -103,6 +124,21 @@ namespace PerfectSelf.WebAPI.Controllers
         public async Task<IActionResult> DeleteReaderProfile(int id)
         {
             var readerProfile = await _context.ReaderProfiles.FindAsync(id);
+            if (readerProfile == null)
+            {
+                return NotFound();
+            }
+
+            _context.ReaderProfiles.Remove(readerProfile);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("ByUid/{uid}")]
+        public async Task<IActionResult> DeleteReaderProfileBy(String uid)
+        {
+            var readerProfile = await _context.ReaderProfiles.FirstOrDefaultAsync(r => r.ReaderUid.ToString() == uid);
             if (readerProfile == null)
             {
                 return NotFound();
