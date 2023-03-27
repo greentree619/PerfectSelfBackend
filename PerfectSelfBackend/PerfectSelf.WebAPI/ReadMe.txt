@@ -1,4 +1,7 @@
-﻿Drop VIEW [dbo].[ReaderList]
+﻿________________________________________________________________________________________
+[ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable]
+
+Drop VIEW [dbo].[ReaderList]
 Go
 Create VIEW [dbo].[ReaderList]
 AS
@@ -18,4 +21,21 @@ FROM     dbo.Book INNER JOIN
                   dbo.[User] ON dbo.Book.ActorUid = dbo.[User].Uid INNER JOIN
                   dbo.[User] AS User_1 ON dbo.Book.ReaderUid = User_1.Uid INNER JOIN
                   dbo.ReaderProfile ON User_1.Uid = dbo.ReaderProfile.ReaderUid
+GO
+
+________________________________________________________________________________________
+[Procedure][Procedure][Procedure][Procedure][Procedure][Procedure][Procedure][Procedure]
+
+CREATE OR ALTER PROCEDURE [dbo].[GetBookCount]
+(@uid nvarchar(250))
+AS
+BEGIN
+DECLARE @book_count INT;
+SET @book_count = (
+SELECT count(Id)  FROM 
+Book
+WHERE ReaderUid = @uid);
+
+RETURN @book_count;
+END
 GO

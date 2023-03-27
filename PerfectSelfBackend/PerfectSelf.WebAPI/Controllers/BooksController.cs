@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PerfectSelf.WebAPI.Context;
 using PerfectSelf.WebAPI.Models;
@@ -33,6 +34,22 @@ namespace PerfectSelf.WebAPI.Controllers
         {
             var items = _context.BookLists.ToList();
             return Ok(items);
+        }
+
+        [HttpGet("GetReaderBookCount/{uid}")]
+        public IActionResult GetReaderBookCount(String uid)
+        {
+            var parameterReturn = new SqlParameter
+            {
+                ParameterName = "ReturnValue",
+                SqlDbType = System.Data.SqlDbType.Int,
+                Direction = System.Data.ParameterDirection.Output,
+            };
+
+            var result = _context.Database.ExecuteSqlRaw($"EXEC @returnValue = [dbo].[GetBookCount] @uid = N'{uid}'", parameterReturn);
+            int returnValue = (int)parameterReturn.Value;
+
+            return Ok(new { count = returnValue });
         }
 
         // GET: api/Books/5
