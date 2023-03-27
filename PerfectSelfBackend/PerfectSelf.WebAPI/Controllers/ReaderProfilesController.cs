@@ -72,10 +72,10 @@ namespace PerfectSelf.WebAPI.Controllers
 
         // PUT: api/ReaderProfiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutReaderProfile(int id, ReaderProfile readerProfile)
+        [HttpPut("{uid}")]
+        public async Task<IActionResult> PutReaderProfile(String uid, ReaderProfile readerProfile)
         {
-            var reader = await _context.ReaderProfiles.FirstOrDefaultAsync(p => p.Id == id);
+            var reader = await _context.ReaderProfiles.FirstOrDefaultAsync(p => p.ReaderUid.ToString() == uid);
 
             if (reader == null)
             {
@@ -95,7 +95,7 @@ namespace PerfectSelf.WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReaderProfileExists(id))
+                if (!ReaderProfileExists(uid))
                 {
                     return NotFound();
                 }
@@ -150,9 +150,9 @@ namespace PerfectSelf.WebAPI.Controllers
             return NoContent();
         }
 
-        private bool ReaderProfileExists(int id)
+        private bool ReaderProfileExists(String uid)
         {
-            return _context.ReaderProfiles.Any(e => e.Id == id);
+            return _context.ReaderProfiles.Any(e => e.ReaderUid.ToString() == uid);
         }
     }
 }
