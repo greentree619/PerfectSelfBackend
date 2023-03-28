@@ -1,9 +1,7 @@
 ﻿________________________________________________________________________________________
 [ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable]
 
-Drop VIEW [dbo].[ReaderList]
-Go
-Create VIEW [dbo].[ReaderList]
+CREATE OR ALTER VIEW [dbo].[ReaderList]
 AS
 SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid, min(dbo.Availability.Date) as Date
 FROM     dbo.[User] LEFT OUTER JOIN
@@ -38,4 +36,78 @@ WHERE ReaderUid = @uid);
 
 RETURN @book_count;
 END
+GO
+
+
+________________________________________________________________________________________
+[Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger]
+CREATE OR ALTER TRIGGER TR_Add_DefaultProfile ON [dbo].[User]
+    FOR INSERT
+AS
+	BEGIN
+	    SET NOCOUNT ON
+	    If (SELECT UserType FROM INSERTED) = 3 --Actor
+	    Begin
+		INSERT  INTO dbo.ActorProfile
+            ( Title,
+				ActorUid,
+				AgeRange,
+				Height,
+				Weight,
+				Country,
+				State,
+				City,
+				AgencyCountry,
+				VaccinationStatus,
+				CreatedTime,
+				UpdatedTime,
+				DeletedTime,
+				IsDeleted
+            )
+            SELECT  '',
+				I.Uid,
+				'',
+				0,
+				0,
+				'',
+				'',
+				'',
+				'',
+				0,
+				CURRENT_TIMESTAMP,
+				CURRENT_TIMESTAMP,
+				CURRENT_TIMESTAMP,
+				0
+            FROM    Inserted I
+		END
+
+		If (SELECT UserType FROM INSERTED) = 4 --Reader
+	    Begin
+		INSERT  INTO dbo.ReaderProfile
+            ( Title,
+				ReaderUid,
+				HourlyPrice,
+				VoiceType,
+				Others,
+				About,
+				Skills,
+				CreatedTime,
+				UpdatedTime,
+				DeletedTime,
+				IsDeleted
+            )
+            SELECT  '',
+				I.Uid,
+				0,
+				0,
+				0,
+				'',
+				'',
+				CURRENT_TIMESTAMP,
+				CURRENT_TIMESTAMP,
+				CURRENT_TIMESTAMP,
+				0
+            FROM    Inserted I
+		END
+     End
 GO

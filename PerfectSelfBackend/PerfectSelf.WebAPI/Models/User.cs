@@ -10,12 +10,12 @@
     {
         public enum AccountType
         {
-            Admin,
-            Developer,
-            Tester,
-            Actor,
-            Reader,
-            Nothing
+            /*0*/Admin,
+            /*1*/Developer,
+            /*2*/Tester,
+            /*3*/Actor,
+            /*4*/Reader,
+            Nothing = -1
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
