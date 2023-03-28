@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PerfectSelf.WebAPI.Context;
 using PerfectSelf.WebAPI.Models;
+using static PerfectSelf.WebAPI.Models.ReaderProfile;
 
 namespace PerfectSelf.WebAPI.Controllers
 {
@@ -82,10 +83,13 @@ namespace PerfectSelf.WebAPI.Controllers
                 return NotFound();
             }
             // don't update if the field is null
-            if (readerProfile.About == null) readerProfile.About = reader.About;
-            if (readerProfile.HourlyPrice == null) readerProfile.HourlyPrice = reader.HourlyPrice;
-            if (readerProfile.Skills == null) readerProfile.Skills = reader.Skills;
-            if (readerProfile.Title == null) readerProfile.Title = reader.Title;
+            readerProfile.Id = reader.Id;
+            if (readerProfile.About == null || readerProfile.About.Length == 0) readerProfile.About = reader.About;
+            if (readerProfile.HourlyPrice == null || readerProfile.HourlyPrice <= 0) readerProfile.HourlyPrice = reader.HourlyPrice;
+            if (readerProfile.Skills == null || readerProfile.Skills.Length == 0) readerProfile.Skills = reader.Skills;
+            if (readerProfile.Title == null || readerProfile.Title.Length == 0) readerProfile.Title = reader.Title;
+            if (readerProfile.VoiceType == null || readerProfile.VoiceType == _VoiceType.Nothing) readerProfile.VoiceType = reader.VoiceType;
+            if (readerProfile.Others == null || readerProfile.Others== _Others.Nothing) readerProfile.Others = reader.Others;
 
             //_context.Entry(reader).State = EntityState.Modified;
             _context.Entry(reader).CurrentValues.SetValues(readerProfile);

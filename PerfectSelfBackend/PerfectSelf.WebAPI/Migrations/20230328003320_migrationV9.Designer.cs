@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerfectSelf.WebAPI.Context;
 
@@ -11,9 +12,10 @@ using PerfectSelf.WebAPI.Context;
 namespace PerfectSelf.WebAPI.Migrations
 {
     [DbContext(typeof(PerfectSelfContext))]
-    partial class PerfectSelfContextModelSnapshot : ModelSnapshot
+    [Migration("20230328003320_migrationV9")]
+    partial class migrationV9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,9 +81,6 @@ namespace PerfectSelf.WebAPI.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActorUid")
-                        .IsUnique();
 
                     b.ToTable("ActorProfile");
                 });

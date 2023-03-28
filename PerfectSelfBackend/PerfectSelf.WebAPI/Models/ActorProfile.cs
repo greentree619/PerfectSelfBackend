@@ -1,9 +1,11 @@
 ﻿namespace PerfectSelf.WebAPI.Models
 {
+    using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("ActorProfile")]
+    [Index(nameof(ActorUid), IsUnique = true)]
     public class ActorProfile : PerfectSelfBase
     {
         public enum Vaccination_Status

@@ -1,9 +1,11 @@
 ﻿namespace PerfectSelf.WebAPI.Models
 {
+    using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("ReaderProfile")]
+    [Index(nameof(ReaderUid), IsUnique = true)]
     public class ReaderProfile : PerfectSelfBase
     {
         public enum _VoiceType
@@ -11,7 +13,7 @@
             DeepVoice,
             RaspyVoice,
             HighVoice,
-            Nothing
+            Nothing=-1
         }
 
         public enum _Others
@@ -20,7 +22,7 @@
             Accent,
             Race,
             Energy,
-            Nothing
+            Nothing = -1
         }
 
         public String? Title { get; set; }
