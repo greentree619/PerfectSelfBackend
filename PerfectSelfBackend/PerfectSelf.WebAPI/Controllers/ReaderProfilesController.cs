@@ -85,11 +85,11 @@ namespace PerfectSelf.WebAPI.Controllers
             // don't update if the field is null
             readerProfile.Id = reader.Id;
             if (readerProfile.About == null || readerProfile.About.Length == 0) readerProfile.About = reader.About;
-            if (readerProfile.HourlyPrice == null || readerProfile.HourlyPrice <= 0) readerProfile.HourlyPrice = reader.HourlyPrice;
+            if (readerProfile.HourlyPrice <= 0) readerProfile.HourlyPrice = reader.HourlyPrice;
             if (readerProfile.Skills == null || readerProfile.Skills.Length == 0) readerProfile.Skills = reader.Skills;
             if (readerProfile.Title == null || readerProfile.Title.Length == 0) readerProfile.Title = reader.Title;
-            if (readerProfile.VoiceType == null || readerProfile.VoiceType == _VoiceType.Nothing) readerProfile.VoiceType = reader.VoiceType;
-            if (readerProfile.Others == null || readerProfile.Others== _Others.Nothing) readerProfile.Others = reader.Others;
+            if (readerProfile.VoiceType == _VoiceType.Nothing) readerProfile.VoiceType = reader.VoiceType;
+            if (readerProfile.Others== _Others.Nothing) readerProfile.Others = reader.Others;
 
             //_context.Entry(reader).State = EntityState.Modified;
             _context.Entry(reader).CurrentValues.SetValues(readerProfile);
@@ -99,14 +99,7 @@ namespace PerfectSelf.WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReaderProfileExists(uid))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();

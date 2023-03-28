@@ -35,11 +35,11 @@ namespace PerfectSelf.WebAPI.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        [HttpGet("{uid}")]
+        public async Task<ActionResult<User>> GetUser(string uid)
         {
-            var user = await _context.Users.FindAsync(id);
-
+            //var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Uid.ToString() == uid);
             if (user == null)
             {
                 return NotFound();
@@ -54,15 +54,40 @@ namespace PerfectSelf.WebAPI.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPut("{uid}")]
+        public async Task<IActionResult> PutUser(string uid, User user)
         {
-            if (id != user.Id)
+            var u = await _context.Users.FirstOrDefaultAsync(p => p.Uid.ToString() == uid);
+            if (u == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            //_context.Entry(user).State = EntityState.Modified;
+            _context.Entry(u).CurrentValues.SetValues(user);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+        // PUT: api/Users/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("name/{uid}")]
+        public async Task<IActionResult> PutUser(string uid, string name)
+        {
+            var u = await _context.Users.FirstOrDefaultAsync(p => p.Uid.ToString() == uid);
+            if (u == null)
+            {
+                return NotFound();
+            }
+            u.UserName = name;
+            _context.Entry(u).State = EntityState.Modified;
 
             try
             {
@@ -70,19 +95,11 @@ namespace PerfectSelf.WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();
         }
-
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -135,10 +152,11 @@ namespace PerfectSelf.WebAPI.Controllers
         }
 
         // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete("{uid}")]
+        public async Task<IActionResult> DeleteUser(string uid)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Uid.ToString() == uid);
+
             if (user == null)
             {
                 return NotFound();
@@ -150,9 +168,9 @@ namespace PerfectSelf.WebAPI.Controllers
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string uid)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Uid.ToString() == uid);
         }
     }
 }
