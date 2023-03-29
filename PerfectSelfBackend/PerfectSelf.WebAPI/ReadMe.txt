@@ -14,7 +14,8 @@ Drop VIEW [dbo].[BookList]
 Go
 CREATE OR ALTER VIEW [dbo].[BookList]
 AS
-SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.BookStartTime, dbo.Book.ScriptFile, dbo.Book.BookEndTime, User_1.UserName as ReaderName, User_1.IsLogin as ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Skills, dbo.ReaderProfile.About, dbo.ReaderProfile.VoiceType, dbo.ReaderProfile.Others
+SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.BookStartTime, dbo.Book.ScriptFile, dbo.Book.BookEndTime, User_1.UserName AS ReaderName, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, 
+                  dbo.ReaderProfile.VoiceType, dbo.ReaderProfile.Others, dbo.Book.ActorUid, dbo.Book.ReaderUid, dbo.ReaderProfile.About, dbo.ReaderProfile.Skills
 FROM     dbo.Book INNER JOIN
                   dbo.[User] ON dbo.Book.ActorUid = dbo.[User].Uid INNER JOIN
                   dbo.[User] AS User_1 ON dbo.Book.ReaderUid = User_1.Uid INNER JOIN

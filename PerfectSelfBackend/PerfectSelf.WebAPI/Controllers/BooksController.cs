@@ -49,6 +49,13 @@ namespace PerfectSelf.WebAPI.Controllers
             return Ok(items);
         }
 
+        [HttpGet("DetailList/ByUid/{uid}")]
+        public IActionResult GetReaderListByUid(String uid)
+        {
+            var items = _context.BookLists.Where(row => (uid == row.ActorUid.ToString() || uid == row.ReaderUid.ToString())).ToList();
+            return Ok(items);
+        }
+
         [HttpGet("GetReaderBookCount/{uid}")]
         public IActionResult GetReaderBookCount(String uid)
         {
