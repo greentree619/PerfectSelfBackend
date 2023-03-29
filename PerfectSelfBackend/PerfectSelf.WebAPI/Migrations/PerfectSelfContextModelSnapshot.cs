@@ -152,6 +152,9 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<Guid>("ReaderUid")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("RoomUid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ScriptFile")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -299,6 +302,7 @@ namespace PerfectSelf.WebAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("About")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedTime")
@@ -307,7 +311,7 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<DateTime>("DeletedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("HourlyPrice")
+                    b.Property<double>("HourlyPrice")
                         .HasColumnType("float");
 
                     b.Property<bool>("IsDeleted")
@@ -320,9 +324,11 @@ namespace PerfectSelf.WebAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Skills")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedTime")

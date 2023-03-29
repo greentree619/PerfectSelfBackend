@@ -28,6 +28,19 @@ namespace PerfectSelf.WebAPI.Controllers
             return await _context.Tapes.ToListAsync();
         }
 
+        [HttpGet("ByUid/{uid}")]
+        public async Task<ActionResult<IEnumerable<Tape>>> GetTapesByUid(String uid)
+        {
+            var tapes = await _context.Tapes.Where(row => uid == row.ReaderUid.ToString()).ToListAsync();
+
+            if (tapes == null)
+            {
+                return NotFound();
+            }
+
+            return tapes;
+        }
+
         // GET: api/Library/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Tape>> GetTape(int id)
@@ -40,7 +53,7 @@ namespace PerfectSelf.WebAPI.Controllers
             }
 
             return tape;
-        }
+        }        
 
         // PUT: api/Library/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
