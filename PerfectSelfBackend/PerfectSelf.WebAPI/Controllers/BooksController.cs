@@ -29,6 +29,19 @@ namespace PerfectSelf.WebAPI.Controllers
             return await _context.Books.ToListAsync();
         }
 
+        [HttpGet("ByUid/{uid}")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByUid(String uid)
+        {
+            var books = await _context.Books.Where(row => (uid == row.ActorUid.ToString() || uid == row.ReaderUid.ToString())).ToListAsync();
+
+            if (books == null)
+            {
+                return NotFound();
+            }
+
+            return books;
+        }
+
         [HttpGet("DetailList")]
         public IActionResult GetReaderList()
         {
