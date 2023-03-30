@@ -143,7 +143,21 @@ namespace PerfectSelf.WebAPI.Controllers
 
             return NoContent();
         }
+        // DELETE: api/Books/5
+        [HttpDelete("ByRoomUid/{uid}")]
+        public async Task<IActionResult> DeleteBookByRoomId(string uid)
+        {
+            var book = await _context.Books.FirstOrDefaultAsync(p => p.RoomUid.ToString() == uid);
+            if (book == null)
+            {
+                return NotFound();
+            }
 
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
