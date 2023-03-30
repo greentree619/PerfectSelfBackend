@@ -120,7 +120,8 @@ namespace PerfectSelf.WebAPI.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return Ok(user);
+            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         [HttpPost("Login")]
