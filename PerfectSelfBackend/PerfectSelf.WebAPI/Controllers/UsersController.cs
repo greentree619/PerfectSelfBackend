@@ -128,12 +128,15 @@ namespace PerfectSelf.WebAPI.Controllers
         public async Task<ActionResult<User>> LoginUser(LoginUser user)
         {
             var userdetails = await _context.Users
-            .SingleOrDefaultAsync(m => m.Email == user.Email && m.Password == user.Password);
-            if (userdetails == null)
+            .SingleOrDefaultAsync(m => m.Email == user.Email);
+            if (userdetails == null || userdetails.UserType != user.UserType)
             {
-                return Ok(new { result = false, user= new { } });
+                return NotFound(new { result = false, user= new { }, error= "User Not Found" });
             }
-
+            if (userdetails.Password != user.Password)
+            {
+                return BadRequest(new { result = false, user = new { }, error = "Wrong password" });
+            }
             userdetails.IsLogin = true;
             userdetails.Token = Common.Global.GenToken();
             _context.Users.Update(userdetails);
@@ -141,7 +144,7 @@ namespace PerfectSelf.WebAPI.Controllers
             Global.onlineAllUsers[userdetails.Token] = userdetails.Id;
 
             userdetails.Password = "";
-            return Ok(new { result=true, user=userdetails });
+            return Ok(new { result=true, user=userdetails, error = "" });
         }
 
         [HttpPost("Logout")]

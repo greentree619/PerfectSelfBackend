@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static PerfectSelf.WebAPI.Models.User;
 
 namespace PerfectSelf.WebAPI.Models
 {
     public class LoginUser
     {
-        public string UserName { get; set; }
+        public AccountType UserType { get; set; }
 
         [Required]
         public string Email { get; set; }
