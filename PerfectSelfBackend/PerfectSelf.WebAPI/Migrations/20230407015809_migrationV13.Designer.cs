@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerfectSelf.WebAPI.Context;
 
@@ -11,9 +12,10 @@ using PerfectSelf.WebAPI.Context;
 namespace PerfectSelf.WebAPI.Migrations
 {
     [DbContext(typeof(PerfectSelfContext))]
-    partial class PerfectSelfContextModelSnapshot : ModelSnapshot
+    [Migration("20230407015809_migrationV13")]
+    partial class migrationV13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +160,7 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<DateTime>("DeletedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsAccept")
+                    b.Property<bool>("IsAccpted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
@@ -167,9 +169,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<string>("ReaderReview")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ReaderReviewDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<float>("ReaderScore")
                         .HasColumnType("real");
@@ -219,9 +218,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<double?>("HourlyPrice")
                         .HasColumnType("float");
 
-                    b.Property<bool>("IsAccept")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Others")
                         .HasColumnType("int");
 
@@ -231,13 +227,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<string>("ReaderName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReaderReview")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("ReaderScore")
-                        .HasColumnType("real");
 
                     b.Property<Guid>("ReaderUid")
                         .HasColumnType("uniqueidentifier");
@@ -370,14 +359,6 @@ namespace PerfectSelf.WebAPI.Migrations
 
                     b.Property<double>("HourlyPrice")
                         .HasColumnType("float");
-
-                    b.Property<string>("IntroBucketName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IntroVideoKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

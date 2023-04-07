@@ -29,11 +29,161 @@ namespace PerfectSelf.WebAPI.Controllers
             return await _context.ReaderProfiles.ToListAsync();
         }
 
-        [HttpGet("ReaderList")]
-        public IActionResult GetReaderList()
+        public enum ReaderListSortType
         {
-            var items = _context.ReaderLists.ToList();
-            return Ok(items);
+            Relevance,
+            Rate,
+            RateDesc,
+            Price,
+            PriceDesc,
+            Available,
+            Nothing = -1
+        }
+
+        public enum AvailableTimeSlotType
+        {
+            Min15,
+            Min30,
+            Min30More,
+            StandBy,
+            Nothing = -1
+        }
+
+        [HttpGet("ReaderList")]
+        public IActionResult GetReaderList( String? readerName,
+                                            bool? isOnline,
+                                            AvailableTimeSlotType? availableTimeSlotType,
+                                            DateTime? availableFrom,
+                                            DateTime? availableTo,
+                                            float? minPrice,
+                                            float? maxPrice,
+                                            PerfectSelfBase.Gender? gender,
+                                            ReaderListSortType? sortBy )
+        {
+            //DbSet<ReaderList> readerLists = _context.ReaderLists;
+            IQueryable<ReaderList> queryableLists = _context.ReaderLists;
+            //String? readerName,
+            if (readerName != null && readerName.Length > 0)
+            {
+                queryableLists = queryableLists.Where(r => 
+                                                        (r.UserName.Contains(readerName) 
+                                                        || r.FirstName.Contains(readerName)
+                                                        || r.LastName.Contains(readerName)));
+            }
+
+            ////bool? availableSoon,
+            //if (availableSoon != null )
+            //{
+            //    if (availableSoon == true)
+            //    {
+            //        queryableLists = queryableLists.Where(r => (r.Date != null && ((DateTime)r.Date).Date == DateTime.Now.Date));
+            //    }
+            //    else
+            //    {
+            //        queryableLists = queryableLists.Where(r => (r.Date == null || ((DateTime)r.Date).Date != DateTime.Now.Date));
+            //    }
+            //}
+
+            //bool? topRated,
+
+            //bool? isOnline,
+            if (isOnline != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.IsLogin == isOnline));
+            }
+
+            //AvailableTimeSlotType? availableTimeSlotType,
+            if (availableTimeSlotType != null)
+            {
+                TimeSpan slotSpan = new TimeSpan(0, 0, 0);
+                switch(availableTimeSlotType) {
+                    case AvailableTimeSlotType.Min15:
+                        slotSpan.Add(new TimeSpan(0, 15, 0));
+                        //queryableLists = queryableLists.Where(r => (r.ToTime != null 
+                        //                                        && r.FromTime != null 
+                        //                                        && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) < 0 ));
+                        break;
+                    case AvailableTimeSlotType.Min30:
+                        slotSpan.Add(new TimeSpan(0, 30, 0));
+                        //queryableLists = queryableLists.Where(r => (r.ToTime != null
+                        //                                        && r.FromTime != null
+                        //                                        && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) < 0));
+                        break;
+                    case AvailableTimeSlotType.Min30More:
+                        slotSpan.Add(new TimeSpan(0, 30, 0));
+                        //queryableLists = queryableLists.Where(r => (r.ToTime != null
+                        //                                        && r.FromTime != null
+                        //                                        && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) > 0));
+                        break;
+                    case AvailableTimeSlotType.StandBy:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            //DateTime? availableFrom,
+            if (availableFrom != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.Date >= availableFrom));
+            }
+
+            //DateTime? availableTo,
+            if (availableTo != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.Date <= availableTo));
+            }
+
+            //float? minPrice,
+            if (minPrice != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.HourlyPrice >= minPrice));
+            }
+
+            //float? maxPrice,
+            if (maxPrice != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.HourlyPrice <= maxPrice));
+            }
+
+            //PerfectSelfBase.Gender? gender,
+            if (gender != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.Gender== gender));
+            }
+
+            //ReaderListSortType? sortBy
+            List<ReaderList> resultList = new List<ReaderList>();
+            if (sortBy != null)
+            {
+                switch (sortBy)
+                {
+                    case ReaderListSortType.Relevance:
+                        resultList = queryableLists.OrderByDescending(r => r.CreatedTime).ToList();
+                        break;
+                    case ReaderListSortType.Rate:
+                        resultList = queryableLists.OrderBy(r => r.Score).ToList();
+                        break;
+                    case ReaderListSortType.RateDesc:
+                        resultList = queryableLists.OrderByDescending(r => r.Score).ToList();
+                        break;
+                    case ReaderListSortType.Price:
+                        resultList = queryableLists.OrderBy(r => r.HourlyPrice).ToList();
+                        break;
+                    case ReaderListSortType.PriceDesc:
+                        resultList = queryableLists.OrderByDescending(r => r.HourlyPrice).ToList();
+                        break;
+                    case ReaderListSortType.Available:
+                        resultList = queryableLists.OrderBy(r => (r.Date == null ? DateTime.MaxValue : r.Date )).ToList();
+                        break;
+                    default:
+                        resultList = queryableLists.OrderByDescending(r => r.CreatedTime).ToList();
+                        break;
+                }
+            }
+            else resultList = queryableLists.OrderByDescending(r => r.CreatedTime).ToList();
+
+            return Ok(resultList);
         }
 
         // GET: api/ReaderProfiles/5

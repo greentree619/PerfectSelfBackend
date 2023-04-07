@@ -8,8 +8,16 @@
     [Table("Availability")]
     public class Availability : PerfectSelfBase
     {
+        public enum ReapeatType
+        {
+            EveryDay,
+            EveryWeek,
+            EveryMonth,
+            Nothing = -1
+        }
         public Guid ReaderUid { get; set; }
-
+        public bool IsStandBy { get; set; } = false;
+        public ReapeatType Repeat { get; set; } = ReapeatType.Nothing;
         public DateTime Date { get; set; }
 
         //[JsonConverter(typeof(TimeOnlyJsonConverter))]

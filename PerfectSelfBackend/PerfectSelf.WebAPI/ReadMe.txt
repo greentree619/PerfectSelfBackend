@@ -3,18 +3,22 @@
 
 CREATE OR ALTER VIEW [dbo].[ReaderList]
 AS
-SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid, min(dbo.Availability.Date) as Date
+SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender
+, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title
+, dbo.[User].Uid
+, dbo.ReaderProfile.ReviewCount, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime, min(dbo.Availability.Date) as Date
 FROM     dbo.[User] LEFT OUTER JOIN
-                  dbo.ReaderProfile ON dbo.[User].Uid = dbo.ReaderProfile.ReaderUid LEFT JOIN
-                  dbo.Availability ON (dbo.[User].Uid = dbo.Availability.ReaderUid and (dbo.Availability.Date >= '3/20/2023 4:28:42 AM'))
-WHERE  (dbo.[User].UserType = 4 ) group by dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid
+                  dbo.ReaderProfile ON dbo.[User].Uid = dbo.ReaderProfile.ReaderUid LEFT OUTER JOIN
+                  dbo.Availability ON (dbo.[User].Uid = dbo.Availability.ReaderUid and (dbo.Availability.Date >= CURRENT_TIMESTAMP))
+WHERE  (dbo.[User].UserType = 4 ) group by dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid, dbo.ReaderProfile.ReviewCount
+, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime
 GO
 
 Drop VIEW [dbo].[BookList]
 Go
 CREATE OR ALTER VIEW [dbo].[BookList]
 AS
-SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.BookStartTime, dbo.Book.ScriptFile, dbo.Book.BookEndTime, User_1.UserName AS ReaderName, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, 
+SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.BookStartTime, dbo.Book.ScriptFile, dbo.Book.BookEndTime, dbo.Book.IsAccept, dbo.Book.ReaderScore, dbo.Book.ReaderReview, dbo.Book.ReaderReviewDate, User_1.UserName AS ReaderName, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, 
                   dbo.ReaderProfile.VoiceType, dbo.ReaderProfile.Others, dbo.Book.ActorUid, dbo.Book.ReaderUid, dbo.ReaderProfile.About, dbo.ReaderProfile.Skills, dbo.[User].UserName AS ActorName
 FROM     dbo.Book INNER JOIN
                   dbo.[User] ON dbo.Book.ActorUid = dbo.[User].Uid INNER JOIN

@@ -49,11 +49,41 @@ namespace PerfectSelf.WebAPI.Controllers
             return Ok(items);
         }
 
-        [HttpGet("DetailList/ByUid/{uid}")]
-        public IActionResult GetReaderListByUid(String uid)
+        public enum BookType
         {
-            var items = _context.BookLists.Where(row => (uid == row.ActorUid.ToString() || uid == row.ReaderUid.ToString())).ToList();
-            return Ok(items);
+            Past,
+            Upcoming,
+            Pending,
+            Nothing = -1
+        }
+        [HttpGet("DetailList/ByUid/{uid}")]
+        public IActionResult GetReaderListByUid(String uid, BookType? bookType)
+        {
+            IQueryable<BookList> items = _context.BookLists.Where(row => (uid == row.ActorUid.ToString() 
+                                || uid == row.ReaderUid.ToString()));
+
+            if (bookType != null)
+            {
+                switch ( bookType )
+                {
+                    case BookType.Past:
+                        items = items.Where(row=> (row.BookStartTime != null && ((DateTime)row.BookStartTime) <= DateTime.Now));
+                        break;
+                    case BookType.Upcoming:
+                        items = items.Where(row => (row.BookStartTime != null
+                                                    && ((DateTime)row.BookStartTime) >= DateTime.Now)
+                                                    && row.IsAccept);
+                        break;
+                    case BookType.Pending:
+                        items = items.Where(row => (row.BookStartTime != null
+                                                    && ((DateTime)row.BookStartTime) >= DateTime.Now)
+                                                    && row.IsAccept == false);
+                        break;
+                }
+            }
+
+            var result = items.OrderBy(r => r.BookStartTime).ToList();
+            return Ok(result);
         }
 
         [HttpGet("GetReaderBookCount/{uid}")]
@@ -84,6 +114,38 @@ namespace PerfectSelf.WebAPI.Controllers
             }
 
             return book;
+        }
+
+        [HttpGet("GetFeedback/ByUid/{uid}")]
+        public IActionResult GetFeedbackByUid(String uid)
+        {
+            IQueryable<BookList> items = _context.BookLists.Where(row => (uid == row.ActorUid.ToString()
+                                || uid == row.ReaderUid.ToString())).Where(row => row.ReaderReview != null 
+                                                                                && row.ReaderReview.Length > 0);
+            var result = items.OrderByDescending(r => r.BookStartTime).ToList();
+            return Ok(result);
+        }
+
+        [HttpPut("GiveFeedbackToUid/{id}")]
+        public async Task<IActionResult> GiveFeedbackToId(Int32 id, float score, String review)
+        {
+            var bookInfo = await _context.Books.FirstOrDefaultAsync(p => p.Id == id);
+            if (bookInfo == null)
+            {
+                return NotFound();
+            }
+            _context.Entry(bookInfo).Property(u => u.ReaderScore).CurrentValue = score;
+            _context.Entry(bookInfo).Property(u => u.ReaderReview).CurrentValue = review;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
         }
 
         // PUT: api/Books/5

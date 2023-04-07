@@ -33,7 +33,7 @@
         public string City { get; set; }
         public string Nationality { get; set; }
         public string PhoneNumber { get; set; }
-        public bool IsLogin { get; set; }
+        public bool IsLogin { get; set; } = false;
         public string Token { get; set; }
     }
 }

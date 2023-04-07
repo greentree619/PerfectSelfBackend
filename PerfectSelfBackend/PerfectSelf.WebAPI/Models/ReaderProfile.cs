@@ -31,6 +31,10 @@
         public _VoiceType VoiceType { get; set; }
         public _Others Others { get; set; }
         public String About { get; set; }
+        public int ReviewCount { get; set; } = 0;
+        public float Score { get; set; } = 0.0f;
         public String Skills { get; set; }
+        public string IntroBucketName { get; set; }
+        public string IntroVideoKey { get; set; }
     }
 }

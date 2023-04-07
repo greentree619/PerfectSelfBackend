@@ -21,6 +21,8 @@
         public String State { get; set; }
         public String City { get; set; }
         public String AgencyCountry { get; set; }
+        public int ReviewCount { get; set; } = 0;
+        public float Score { get; set; } = 0.0f;
         public Vaccination_Status VaccinationStatus { get; set; }
 }
 }

@@ -50,5 +50,6 @@
         public DbSet<PerfectSelfVersion> PerfectSelfVersions { get; set; }
         public DbSet<ReaderList> ReaderLists { get; set; }
         public DbSet<BookList> BookLists { get; set; }
+        public DbSet<MessageHistory> MessageHistorys { get; set; }
     }
 }

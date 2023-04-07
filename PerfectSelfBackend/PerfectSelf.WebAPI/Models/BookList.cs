@@ -15,11 +15,14 @@
         public String ActorName { get; set; }
         public String ReaderName { get; set; }
         public Boolean ReaderIsLogin { get; set; }
+        public bool IsAccept { get; set; }
         public String Title { get; set; }
         public double? HourlyPrice { get; set; }
         public ReaderProfile._Others Others { get; set; }
         public String About { get; set; }
         public String Skills { get; set; }
         public ReaderProfile._VoiceType VoiceType { get; set; }
+        public float ReaderScore { get; set; }
+        public String ReaderReview { get; set; }
     }
 }
