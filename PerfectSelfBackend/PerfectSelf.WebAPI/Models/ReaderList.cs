@@ -18,9 +18,9 @@
         public int ReviewCount { get; set; }
         public float Score { get; set; }
         public double? HourlyPrice { get; set; }
-        public bool IsStandBy { get; set; }
-        public DateTime FromTime { get; set; }
-        public DateTime ToTime { get; set; }
+        public bool? IsStandBy { get; set; }
+        public DateTime? FromTime { get; set; }
+        public DateTime? ToTime { get; set; }
         public DateTime? Date { get; set; }
         //public DateTime? FromTime { get; set; }
         //public DateTime? ToTime { get; set; }
