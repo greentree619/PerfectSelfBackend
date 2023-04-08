@@ -1,17 +1,31 @@
 ﻿________________________________________________________________________________________
 [ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable][ViewTable]
 
+CREATE OR ALTER VIEW [dbo].[SoonOneAvailability]
+AS
+WITH added_row_number AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER(PARTITION BY ReaderUid order by Date) AS row_number
+  FROM Availability WHERE Date >= CURRENT_TIMESTAMP
+)
+SELECT
+  *
+FROM added_row_number
+WHERE row_number = 1;
+GO
+
 CREATE OR ALTER VIEW [dbo].[ReaderList]
 AS
 SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender
-, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title
+, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.ReaderProfile.IsSponsored
 , dbo.[User].Uid
-, dbo.ReaderProfile.ReviewCount, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime, min(dbo.Availability.Date) as Date
+, dbo.ReaderProfile.ReviewCount, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime, dbo.SoonOneAvailability.Date, dbo.SoonOneAvailability.FromTime
+, dbo.SoonOneAvailability.ToTime, dbo.SoonOneAvailability.IsStandBy
 FROM     dbo.[User] LEFT OUTER JOIN
                   dbo.ReaderProfile ON dbo.[User].Uid = dbo.ReaderProfile.ReaderUid LEFT OUTER JOIN
-                  dbo.Availability ON (dbo.[User].Uid = dbo.Availability.ReaderUid and (dbo.Availability.Date >= CURRENT_TIMESTAMP))
-WHERE  (dbo.[User].UserType = 4 ) group by dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender, dbo.[User].IsLogin, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.[User].Uid, dbo.ReaderProfile.ReviewCount
-, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime
+                  dbo.SoonOneAvailability ON (dbo.[User].Uid = dbo.SoonOneAvailability.ReaderUid)
+WHERE  (dbo.[User].UserType = 4 )
 GO
 
 Drop VIEW [dbo].[BookList]

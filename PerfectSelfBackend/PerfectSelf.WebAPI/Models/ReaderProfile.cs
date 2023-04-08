@@ -34,6 +34,7 @@
         public int ReviewCount { get; set; } = 0;
         public float Score { get; set; } = 0.0f;
         public String Skills { get; set; }
+        public bool IsSponsored { get; set; } = false;
         public string IntroBucketName { get; set; }
         public string IntroVideoKey { get; set; }
     }

@@ -51,6 +51,9 @@ namespace PerfectSelf.WebAPI.Controllers
 
         [HttpGet("ReaderList")]
         public IActionResult GetReaderList( String? readerName,
+                                            bool? isSponsored,
+                                            bool? availableSoon,
+                                            float? topRated,
                                             bool? isOnline,
                                             AvailableTimeSlotType? availableTimeSlotType,
                                             DateTime? availableFrom,
@@ -71,20 +74,31 @@ namespace PerfectSelf.WebAPI.Controllers
                                                         || r.LastName.Contains(readerName)));
             }
 
-            ////bool? availableSoon,
-            //if (availableSoon != null )
-            //{
-            //    if (availableSoon == true)
-            //    {
-            //        queryableLists = queryableLists.Where(r => (r.Date != null && ((DateTime)r.Date).Date == DateTime.Now.Date));
-            //    }
-            //    else
-            //    {
-            //        queryableLists = queryableLists.Where(r => (r.Date == null || ((DateTime)r.Date).Date != DateTime.Now.Date));
-            //    }
-            //}
+            //bool? isSponsored,
+            if (isSponsored != null)
+            {
+                queryableLists = queryableLists.Where(r =>
+                                                        (r.IsSponsored == isSponsored));
+            }
 
-            //bool? topRated,
+            //bool? availableSoon,
+            if (availableSoon != null)
+            {
+                if (availableSoon == true)
+                {
+                    queryableLists = queryableLists.Where(r => (r.Date != null && ((DateTime)r.Date).Date == DateTime.Now.Date));
+                }
+                else
+                {
+                    queryableLists = queryableLists.Where(r => (r.Date == null || ((DateTime)r.Date).Date != DateTime.Now.Date));
+                }
+            }
+
+            //float? topRated,
+            if (topRated != null)
+            {
+                queryableLists = queryableLists.Where(r => (r.Score >= topRated));
+            }
 
             //bool? isOnline,
             if (isOnline != null)
@@ -99,23 +113,24 @@ namespace PerfectSelf.WebAPI.Controllers
                 switch(availableTimeSlotType) {
                     case AvailableTimeSlotType.Min15:
                         slotSpan.Add(new TimeSpan(0, 15, 0));
-                        //queryableLists = queryableLists.Where(r => (r.ToTime != null 
-                        //                                        && r.FromTime != null 
-                        //                                        && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) < 0 ));
+                        queryableLists = queryableLists.Where(r => (r.ToTime != null
+                                                                && r.FromTime != null
+                                                                && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) >= 0));
                         break;
                     case AvailableTimeSlotType.Min30:
                         slotSpan.Add(new TimeSpan(0, 30, 0));
-                        //queryableLists = queryableLists.Where(r => (r.ToTime != null
-                        //                                        && r.FromTime != null
-                        //                                        && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) < 0));
+                        queryableLists = queryableLists.Where(r => (r.ToTime != null
+                                                                && r.FromTime != null
+                                                                && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)) >= slotSpan));
                         break;
                     case AvailableTimeSlotType.Min30More:
-                        slotSpan.Add(new TimeSpan(0, 30, 0));
-                        //queryableLists = queryableLists.Where(r => (r.ToTime != null
-                        //                                        && r.FromTime != null
-                        //                                        && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) > 0));
+                        slotSpan.Add(new TimeSpan(0, 45, 0));
+                        queryableLists = queryableLists.Where(r => (r.ToTime != null
+                                                                && r.FromTime != null
+                                                                && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)) >= slotSpan));
                         break;
                     case AvailableTimeSlotType.StandBy:
+                        queryableLists = queryableLists.Where(r => (r.IsStandBy == true));
                         break;
                     default:
                         break;
