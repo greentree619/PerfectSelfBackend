@@ -130,3 +130,22 @@ AS
 		END
      End
 GO
+
+CREATE OR ALTER TRIGGER TR_Delete_DefaultProfile ON [dbo].[User]
+    FOR DELETE
+AS
+BEGIN
+	    SET NOCOUNT ON
+	    If (SELECT UserType FROM DELETED) = 3 --Actor
+	    Begin
+			DELETE FROM dbo.ActorProfile
+				WHERE ActorUid = (SELECT DELETED.Uid FROM DELETED)
+		END
+
+		If (SELECT UserType FROM DELETED) = 4 --Reader
+	    Begin
+			DELETE FROM dbo.ReaderProfile
+				WHERE ReaderUid = (SELECT DELETED.Uid FROM DELETED)		
+		END
+     End
+GO
