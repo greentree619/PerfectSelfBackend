@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerfectSelf.WebAPI.Context;
 
@@ -11,9 +12,10 @@ using PerfectSelf.WebAPI.Context;
 namespace PerfectSelf.WebAPI.Migrations
 {
     [DbContext(typeof(PerfectSelfContext))]
-    partial class PerfectSelfContextModelSnapshot : ModelSnapshot
+    [Migration("20230408073744_migrationV18")]
+    partial class migrationV18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,68 +267,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.ToView("booklist");
                 });
 
-            modelBuilder.Entity("PerfectSelf.WebAPI.Models.MessageChannelHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("HadRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverAvatarBucket")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverAvatarKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ReceiverIsOnline")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ReceiverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ReceiverUid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoomUid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("SendTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SenderAvatarBucket")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderAvatarKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SenderIsOnline")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SenderName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("SenderUid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MessageChannel");
-                });
-
             modelBuilder.Entity("PerfectSelf.WebAPI.Models.MessageHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -341,9 +281,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<DateTime>("DeletedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("HadRead")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -354,7 +291,7 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<Guid>("ReceiverUid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RoomUid")
+                    b.Property<Guid>("RoomUid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SendTime")

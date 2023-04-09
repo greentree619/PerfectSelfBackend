@@ -218,6 +218,11 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpGet("Detail/{uid}")]
         public async Task<ActionResult> GetReaderDetailProfile(String uid)
         {
+            List<Book> reviewList = _context.Books.Where(row => (row.ReaderUid.ToString() == uid 
+                                                        && row.ReaderReview.Length > 0)).ToList();
+            List<Availability> availabilityList = _context.Availabilities.Where(row => (row.ReaderUid.ToString() == uid
+                                                        && row.Date >= DateTime.Now)).ToList();
+
             var ReaderDetailProfile = (from users in _context.Users
                                    join profiles in _context.ReaderProfiles
                                    on users.Uid equals profiles.ReaderUid
@@ -231,8 +236,15 @@ namespace PerfectSelf.WebAPI.Controllers
                                        profiles.Others,
                                        profiles.VoiceType,
                                        profiles.About,
-                                       profiles.Skills
-                                    }).Single();
+                                       profiles.Skills,
+                                       profiles.Score,
+                                       profiles.IntroBucketName,
+                                       profiles.IntroVideoKey,
+                                       BookPassCount = reviewList.Count,
+                                       AllAvailability = availabilityList,
+                                       ReviewLists = reviewList
+                                   }).Single();
+
             return Ok(ReaderDetailProfile);
         }
 

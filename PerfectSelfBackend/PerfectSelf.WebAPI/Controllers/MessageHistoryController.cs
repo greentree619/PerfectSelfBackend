@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PerfectSelf.WebAPI.Context;
 using PerfectSelf.WebAPI.Models;
@@ -40,6 +41,68 @@ namespace PerfectSelf.WebAPI.Controllers
             }
 
             return MessageHistory;
+        }
+
+        // GET: api/MessageHistorys/5
+        [HttpGet("GetChannelHistory/{uid}")]
+        public async Task<ActionResult<IEnumerable<MessageChannelHistory>>> GetChannelHistory(String uid)
+        {
+            List<MessageChannelHistory> messageChannelHistories = _context.MessageChannelHistorys.Where(row => (row.SenderUid.ToString() == uid 
+                                                                                                                      || row.ReceiverUid.ToString() == uid)).ToList();
+
+            if (messageChannelHistories == null)
+            {
+                return NotFound();
+            }
+
+            return messageChannelHistories;
+        }
+
+        [HttpGet("GetChatHistory/{roomUid}")]
+        public async Task<ActionResult<IEnumerable<MessageChannelHistory>>> GetChatHistory(String roomUid)
+        {
+            List<MessageChannelHistory> messageChannelHistories = _context.MessageChannelHistorys.Where(row => (row.RoomUid.ToString() == roomUid))
+                                                                                                .OrderByDescending(row => row.SendTime).Take(10).ToList();
+
+            if (messageChannelHistories == null)
+            {
+                return NotFound();
+            }
+
+            return messageChannelHistories;
+        }
+
+        [HttpGet("GetUnreadCound/{roomUid}")]
+        public async Task<IActionResult> GetUnreadCound(String roomUid)
+        {
+            var parameterReturn = new SqlParameter
+            {
+                ParameterName = "ReturnValue",
+                SqlDbType = System.Data.SqlDbType.Int,
+                Direction = System.Data.ParameterDirection.Output,
+            };
+
+            var result = _context.Database.ExecuteSqlRaw($"EXEC @returnValue = [dbo].[GetUnreadMessageCount] @roomUid = N'{roomUid}'", parameterReturn);
+            int returnValue = (int)parameterReturn.Value;
+
+            return Ok(new { count = returnValue });
+        }
+
+        [HttpGet("GetRoomId/{senderUid}/{receiverUid}")]
+        public async Task<IActionResult> GetRoomId(String senderUid, String receiverUid)
+        {
+            List<MessageHistory> messageChatHistories = _context.MessageHistorys
+                                                                        .Where(row => ((row.SenderUid.ToString() == senderUid && row.ReceiverUid.ToString() == receiverUid)
+                                                                                      || (row.SenderUid.ToString() == receiverUid && row.ReceiverUid.ToString() == senderUid)))
+                                                                        .Take(1).ToList();
+
+            String roomUid = Guid.NewGuid().ToString();
+            if (messageChatHistories != null)
+            {
+                roomUid = messageChatHistories[0].RoomUid.ToString();
+            }
+
+            return Ok(new { roomUid = roomUid });
         }
 
         // PUT: api/MessageHistorys/5

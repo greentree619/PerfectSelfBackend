@@ -40,6 +40,32 @@ FROM     dbo.Book INNER JOIN
                   dbo.ReaderProfile ON User_1.Uid = dbo.ReaderProfile.ReaderUid
 GO
 
+CREATE OR ALTER VIEW [dbo].[MessageChannelUnread]
+AS
+	SELECT dbo.MessageHistory.RoomUid AS RoomUid, COUNT(HadRead) AS UnreadCount
+	FROM     dbo.MessageHistory
+	WHERE  (HadRead = 0)
+	GROUP BY dbo.MessageHistory.RoomUid
+GO
+
+
+CREATE OR ALTER VIEW [dbo].[MessageChannelView]
+AS
+WITH added_row_number AS (
+  SELECT dbo.MessageHistory.Id, dbo.MessageHistory.RoomUid, dbo.MessageHistory.SenderUid, dbo.[User].UserName AS SenderName, dbo.MessageHistory.ReceiverUid, User_1.UserName AS ReceiverName, dbo.[User].AvatarBucketName AS SenderAvatarBucket, 
+                  dbo.[User].AvatarKey AS SenderAvatarKey, User_1.AvatarBucketName AS ReceiverAvatarBucket, User_1.AvatarKey AS ReceiverAvatarKey, dbo.[User].IsLogin AS SenderIsOnline, User_1.IsLogin AS ReceiverIsOnline, 
+                  dbo.MessageHistory.Message, dbo.MessageHistory.SendTime, dbo.MessageHistory.HadRead, ROW_NUMBER() OVER(PARTITION BY RoomUid order by SendTime desc) AS row_number
+  FROM     dbo.MessageHistory INNER JOIN
+                  dbo.[User] ON dbo.MessageHistory.SenderUid = dbo.[User].Uid INNER JOIN
+                  dbo.[User] AS User_1 ON dbo.MessageHistory.ReceiverUid = User_1.Uid
+)
+SELECT
+  *
+FROM added_row_number
+WHERE row_number = 1;
+GO
+
+
 ________________________________________________________________________________________
 [Procedure][Procedure][Procedure][Procedure][Procedure][Procedure][Procedure][Procedure]
 
@@ -57,6 +83,19 @@ RETURN @book_count;
 END
 GO
 
+CREATE OR ALTER PROCEDURE [dbo].[GetUnreadMessageCount]
+(@roomUid nvarchar(250))
+AS
+BEGIN
+DECLARE @unread_count INT;
+SET @unread_count = (
+SELECT count(Id)  FROM 
+MessageHistory
+WHERE roomUid = @roomUid and HadRead = 0);
+
+RETURN @unread_count;
+END
+GO
 
 ________________________________________________________________________________________
 [Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger]
