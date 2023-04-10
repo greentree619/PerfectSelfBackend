@@ -220,6 +220,21 @@ namespace PerfectSelf.WebAPI.Controllers
 
             return NoContent();
         }
+        // Accept Booking: api/Books/5
+        [HttpPost("Accept/{id}")]
+        public async Task<IActionResult> AcceptBooking(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            _context.Entry(book).Property(u => u.IsAccept).CurrentValue = true;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
