@@ -21,6 +21,8 @@
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Uid { get; set; } = Guid.NewGuid();
         public AccountType UserType { get; set; }
+        public string AvatarBucketName { get; set; }
+        public string AvatarKey { get; set; }
         public string UserName { get; set; }        
         public string Email { get; set; }
         public string Password { get; set; }

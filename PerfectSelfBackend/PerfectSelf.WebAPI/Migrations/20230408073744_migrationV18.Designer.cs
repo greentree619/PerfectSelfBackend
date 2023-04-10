@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerfectSelf.WebAPI.Context;
 
@@ -11,9 +12,10 @@ using PerfectSelf.WebAPI.Context;
 namespace PerfectSelf.WebAPI.Migrations
 {
     [DbContext(typeof(PerfectSelfContext))]
-    partial class PerfectSelfContextModelSnapshot : ModelSnapshot
+    [Migration("20230408073744_migrationV18")]
+    partial class migrationV18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,19 +267,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.ToView("booklist");
                 });
 
-            modelBuilder.Entity("PerfectSelf.WebAPI.Models.MessageChannelView", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MessageChannelView");
-                });
-
             modelBuilder.Entity("PerfectSelf.WebAPI.Models.MessageHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -292,9 +281,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<DateTime>("DeletedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("HadRead")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -305,7 +291,7 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<Guid>("ReceiverUid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RoomUid")
+                    b.Property<Guid>("RoomUid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SendTime")
@@ -402,9 +388,6 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.Property<float>("Score")
                         .HasColumnType("real");
 
-                    b.Property<int>("TimeSlot")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -434,9 +417,6 @@ namespace PerfectSelf.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AuditionType")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -455,9 +435,6 @@ namespace PerfectSelf.WebAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsExplicitRead")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsSponsored")

@@ -25,6 +25,14 @@
             Nothing = -1
         }
 
+        public enum _AuditionType
+        {
+            CommercialRead = 0x1,
+            ShortRead = 0x2,
+            ExtendRead = 0x4,
+            Nothing = -1
+        }
+        
         public String Title { get; set; }
         public Guid ReaderUid { get; set; }
         public double HourlyPrice { get; set; }
@@ -35,7 +43,9 @@
         public float Score { get; set; } = 0.0f;
         public String Skills { get; set; }
         public bool IsSponsored { get; set; } = false;
+        public bool IsExplicitRead { get; set; } = false;
         public string IntroBucketName { get; set; }
         public string IntroVideoKey { get; set; }
+        public UInt32 AuditionType { get; set; } = 0;
     }
 }

@@ -8,8 +8,9 @@
     {
         public Guid SenderUid { get; set; }
         public Guid ReceiverUid { get; set; }
-        public Guid RoomUid { get; set; }
+        public Guid? RoomUid { get; set; }
         public DateTime SendTime { get; set; }
         public String Message { get; set; }
+        public bool HadRead { get; set; } = false;
     }
 }

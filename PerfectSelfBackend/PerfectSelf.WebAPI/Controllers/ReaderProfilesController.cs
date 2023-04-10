@@ -52,6 +52,8 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpGet("ReaderList")]
         public IActionResult GetReaderList( String? readerName,
                                             bool? isSponsored,
+                                            bool? IsExplicitRead,
+                                            UInt32? AuditionType,
                                             bool? availableSoon,
                                             float? topRated,
                                             bool? isOnline,
@@ -79,6 +81,20 @@ namespace PerfectSelf.WebAPI.Controllers
             {
                 queryableLists = queryableLists.Where(r =>
                                                         (r.IsSponsored == isSponsored));
+            }
+
+            //bool? IsExplicitRead,
+            if (IsExplicitRead != null)
+            {
+                queryableLists = queryableLists.Where(r =>
+                                                        (r.IsExplicitRead == IsExplicitRead));
+            }
+
+            //UInt32? AuditionType,
+            if (AuditionType != null)
+            {
+                queryableLists = queryableLists.Where(r =>
+                                                        ((r.AuditionType & AuditionType) > 0));
             }
 
             //bool? availableSoon,
@@ -109,25 +125,17 @@ namespace PerfectSelf.WebAPI.Controllers
             //AvailableTimeSlotType? availableTimeSlotType,
             if (availableTimeSlotType != null)
             {
-                TimeSpan slotSpan = new TimeSpan(0, 0, 0);
+                //TimeSpan slotSpan = new TimeSpan(0, 0, 0);
                 switch(availableTimeSlotType) {
                     case AvailableTimeSlotType.Min15:
-                        slotSpan.Add(new TimeSpan(0, 15, 0));
-                        queryableLists = queryableLists.Where(r => (r.ToTime != null
-                                                                && r.FromTime != null
-                                                                && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)).CompareTo(slotSpan) >= 0));
+                        //slotSpan.Add(new TimeSpan(0, 15, 0));
+                        queryableLists = queryableLists.Where(r => (r.TimeSlot != null && r.TimeSlot >= 15));
                         break;
                     case AvailableTimeSlotType.Min30:
-                        slotSpan.Add(new TimeSpan(0, 30, 0));
-                        queryableLists = queryableLists.Where(r => (r.ToTime != null
-                                                                && r.FromTime != null
-                                                                && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)) >= slotSpan));
+                        queryableLists = queryableLists.Where(r => (r.TimeSlot != null && r.TimeSlot >= 30));
                         break;
                     case AvailableTimeSlotType.Min30More:
-                        slotSpan.Add(new TimeSpan(0, 45, 0));
-                        queryableLists = queryableLists.Where(r => (r.ToTime != null
-                                                                && r.FromTime != null
-                                                                && ((DateTime)r.ToTime).Subtract(((DateTime)r.FromTime)) >= slotSpan));
+                        queryableLists = queryableLists.Where(r => (r.TimeSlot != null && r.TimeSlot >= 45));
                         break;
                     case AvailableTimeSlotType.StandBy:
                         queryableLists = queryableLists.Where(r => (r.IsStandBy == true));
@@ -218,6 +226,11 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpGet("Detail/{uid}")]
         public async Task<ActionResult> GetReaderDetailProfile(String uid)
         {
+            List<Book> reviewList = _context.Books.Where(row => (row.ReaderUid.ToString() == uid 
+                                                        && row.ReaderReview.Length > 0)).ToList();
+            List<Availability> availabilityList = _context.Availabilities.Where(row => (row.ReaderUid.ToString() == uid
+                                                        && row.Date >= DateTime.Now)).ToList();
+
             var ReaderDetailProfile = (from users in _context.Users
                                    join profiles in _context.ReaderProfiles
                                    on users.Uid equals profiles.ReaderUid
@@ -231,8 +244,15 @@ namespace PerfectSelf.WebAPI.Controllers
                                        profiles.Others,
                                        profiles.VoiceType,
                                        profiles.About,
-                                       profiles.Skills
-                                    }).Single();
+                                       profiles.Skills,
+                                       profiles.Score,
+                                       profiles.IntroBucketName,
+                                       profiles.IntroVideoKey,
+                                       BookPassCount = reviewList.Count,
+                                       AllAvailability = availabilityList,
+                                       ReviewLists = reviewList
+                                   }).Single();
+
             return Ok(ReaderDetailProfile);
         }
 
