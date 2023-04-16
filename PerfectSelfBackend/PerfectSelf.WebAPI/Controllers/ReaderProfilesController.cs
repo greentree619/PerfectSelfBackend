@@ -53,7 +53,7 @@ namespace PerfectSelf.WebAPI.Controllers
         public IActionResult GetReaderList( String? readerName,
                                             bool? isSponsored,
                                             bool? IsExplicitRead,
-                                            UInt32? AuditionType,
+                                            int? AuditionType,
                                             bool? availableSoon,
                                             float? topRated,
                                             bool? isOnline,
@@ -90,7 +90,7 @@ namespace PerfectSelf.WebAPI.Controllers
                                                         (r.IsExplicitRead == IsExplicitRead));
             }
 
-            //UInt32? AuditionType,
+            //int? AuditionType,
             if (AuditionType != null)
             {
                 queryableLists = queryableLists.Where(r =>
@@ -239,6 +239,8 @@ namespace PerfectSelf.WebAPI.Controllers
                                    {
                                        users.Uid,
                                        users.UserName,
+                                       users.AvatarBucketName,
+                                       users.AvatarKey,
                                        profiles.Title,
                                        profiles.HourlyPrice,
                                        profiles.Others,

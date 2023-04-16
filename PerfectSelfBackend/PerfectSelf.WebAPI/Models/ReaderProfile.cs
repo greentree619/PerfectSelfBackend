@@ -46,6 +46,6 @@
         public bool IsExplicitRead { get; set; } = false;
         public string IntroBucketName { get; set; }
         public string IntroVideoKey { get; set; }
-        public UInt32 AuditionType { get; set; } = 0;
+        public int AuditionType { get; set; } = 0;
     }
 }
