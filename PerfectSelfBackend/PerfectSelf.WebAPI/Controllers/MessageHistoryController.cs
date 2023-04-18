@@ -59,47 +59,24 @@ namespace PerfectSelf.WebAPI.Controllers
         }
 
         [HttpGet("GetChatHistory/{roomUid}")]
-        public async Task<ActionResult<IEnumerable<MessageChannelView>>> GetChatHistory(String roomUid)
+        public async Task<ActionResult<IEnumerable<MessageHistory>>> GetChatHistory(String roomUid)
         {
-            List<MessageChannelView> messageChannelHistories = _context.MessageChannelHistorys.Where(row => (row.RoomUid.ToString() == roomUid))
-                                                                                                .OrderByDescending(row => row.SendTime).Take(10).ToList();
-
-            if (messageChannelHistories == null)
+            List<MessageHistory> messageHistories = _context.MessageHistorys.Where(row => (row.RoomUid.ToString() == roomUid))
+                                                                                                .OrderByDescending(row => row.SendTime).Take(10).OrderBy(row => row.Id).ToList();
+            if (messageHistories == null)
             {
                 return NotFound();
             }
 
-            return messageChannelHistories;
+            return messageHistories;
         }
 
         [HttpGet("GetChatHistoryEx/{senderUid}/{receiverUid}")]
         //[HttpGet("GetChatHistoryEx/{roomUid}")]
-        public async Task<ActionResult<IEnumerable<MessageChannelView>>> GetChatHistoryEx(String senderUid, String receiverUid)
+        public async Task<ActionResult<IEnumerable<MessageHistory>>> GetChatHistoryEx(String senderUid, String receiverUid)
         {
-            //var result = _context.Database.ExecuteSqlRaw($"EXEC [dbo].[GetChatHistoryEx] @roomUid = N'{roomUid}'");
-            //int returnValue = (int)parameterReturn.Value;
-
-            List<MessageHistory> messageChatHistories = _context.MessageHistorys
-                                                                        .Where(row => ((row.SenderUid.ToString() == senderUid && row.ReceiverUid.ToString() == receiverUid)
-                                                                                      || (row.SenderUid.ToString() == receiverUid && row.ReceiverUid.ToString() == senderUid)))
-                                                                        .Take(1).ToList();
-
-            String roomUid = Guid.NewGuid().ToString();
-            if (messageChatHistories != null)
-            {
-                roomUid = messageChatHistories[0].RoomUid.ToString();
-            }
-
-
-            List<MessageChannelView> messageChannelHistories = _context.MessageChannelHistorys.Where(row => (row.RoomUid.ToString() == roomUid))
-                                                                                                .OrderByDescending(row => row.SendTime).Take(10).ToList();
-
-            if (messageChannelHistories == null)
-            {
-                return NotFound();
-            }
-
-            return messageChannelHistories;
+            List<MessageHistory> messageHistories = _context.MessageHistorys.FromSqlRaw<MessageHistory>($"EXEC [dbo].[GetChatHistoryEx] @SenderUid = N'{senderUid}', @ReceiverUid = N'{receiverUid}'").ToList();
+            return messageHistories;
         }
 
         [HttpGet("GetUnreadCount/{roomUid}")]

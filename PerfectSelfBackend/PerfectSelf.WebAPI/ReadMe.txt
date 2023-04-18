@@ -98,13 +98,22 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[GetChatHistoryEx]  
-    (@RoomUid NVARCHAR(20))  
+    (@SenderUid NVARCHAR(128), @ReceiverUid NVARCHAR(128))
 AS  
 BEGIN  
+	DECLARE @RoomUid NVARCHAR(128);
+	DECLARE @RoomCount Int;
     -- SET NOCOUNT ON added to prevent extra result sets from  
     -- interfering with SELECT statements.  
-    SET NOCOUNT ON;  
-    SELECT top(10) * from MessageChannelView where RoomUid=@RoomUid order by SendTime desc
+    SET NOCOUNT ON;
+	SET @RoomUid = (
+		SELECT top 1 RoomUid FROM 
+		MessageHistory
+		WHERE (SenderUid = @SenderUid and ReceiverUid = @ReceiverUid) or (ReceiverUid = @SenderUid and SenderUid = @ReceiverUid));
+	-- SET NOCOUNT ON;
+    With recent_message as (SELECT top 10 * from MessageHistory where RoomUid=@RoomUid order by SendTime desc) SELECT
+	  *
+	FROM recent_message order by Id;
 END
 GO
 
