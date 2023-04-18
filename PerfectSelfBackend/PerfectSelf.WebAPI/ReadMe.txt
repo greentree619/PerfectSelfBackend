@@ -52,7 +52,7 @@ GO
 CREATE OR ALTER VIEW [dbo].[MessageChannelView]
 AS
 WITH added_row_number AS (
-  SELECT dbo.MessageHistory.Id, dbo.MessageHistory.RoomUid, dbo.MessageHistory.SenderUid, dbo.[User].UserName AS SenderName, dbo.MessageHistory.ReceiverUid, User_1.UserName AS ReceiverName, dbo.[User].AvatarBucketName AS SenderAvatarBucket, 
+  SELECT dbo.MessageHistory.Id, dbo.MessageHistory.RoomUid, dbo.MessageHistory.SenderUid AS SenderUid, dbo.[User].UserName AS SenderName, dbo.MessageHistory.ReceiverUid AS ReceiverUid, User_1.UserName AS ReceiverName, dbo.[User].AvatarBucketName AS SenderAvatarBucket, 
                   dbo.[User].AvatarKey AS SenderAvatarKey, User_1.AvatarBucketName AS ReceiverAvatarBucket, User_1.AvatarKey AS ReceiverAvatarKey, dbo.[User].IsLogin AS SenderIsOnline, User_1.IsLogin AS ReceiverIsOnline, 
                   dbo.MessageHistory.Message, dbo.MessageHistory.SendTime, dbo.MessageHistory.HadRead, ROW_NUMBER() OVER(PARTITION BY RoomUid order by SendTime desc) AS row_number
   FROM     dbo.MessageHistory INNER JOIN
@@ -94,6 +94,17 @@ MessageHistory
 WHERE roomUid = @roomUid and HadRead = 0);
 
 RETURN @unread_count;
+END
+GO
+
+CREATE OR ALTER PROCEDURE [dbo].[GetChatHistoryEx]  
+    (@RoomUid NVARCHAR(20))  
+AS  
+BEGIN  
+    -- SET NOCOUNT ON added to prevent extra result sets from  
+    -- interfering with SELECT statements.  
+    SET NOCOUNT ON;  
+    SELECT top(10) * from MessageChannelView where RoomUid=@RoomUid order by SendTime desc
 END
 GO
 

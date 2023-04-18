@@ -9,19 +9,19 @@
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public Guid SenderUid { get; }
-        public String SenderName { get; }
-        public Guid ReceiverUid { get; }
-        public String ReceiverName { get; }
-        public Guid RoomUid { get; }
-        public DateTime SendTime { get; }
-        public bool HadRead { get; }
-        public String Message { get; }
-        public String SenderAvatarBucket { get; }
-        public String SenderAvatarKey { get; }
-        public String ReceiverAvatarBucket { get; }
-        public String ReceiverAvatarKey { get; }
-        public bool SenderIsOnline { get; }
-        public bool ReceiverIsOnline { get; }
+        public Guid SenderUid { get; set; }
+        public String SenderName { get; set; }
+        public Guid ReceiverUid { get; set; }
+        public String ReceiverName { get; set; }
+        public Guid RoomUid { get; set; }
+        public DateTime SendTime { get; set; }
+        public bool HadRead { get; set; }
+        public String Message { get; set; }
+        public String SenderAvatarBucket { get; set; }
+        public String SenderAvatarKey { get; set; }
+        public String ReceiverAvatarBucket { get; set; }
+        public String ReceiverAvatarKey { get; set; }
+        public bool SenderIsOnline { get; set; }
+        public bool ReceiverIsOnline { get; set; }
     }
 }
