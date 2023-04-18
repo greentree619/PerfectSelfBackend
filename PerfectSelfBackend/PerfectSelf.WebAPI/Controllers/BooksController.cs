@@ -235,6 +235,22 @@ namespace PerfectSelf.WebAPI.Controllers
 
             return NoContent();
         }
+        // Reschedule Booking: api/Books/5
+        [HttpPost("Reschedule/{id}")]
+        public async Task<IActionResult> RescheduleBooking(int id, Book newBook)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            _context.Entry(book).Property(u => u.BookStartTime).CurrentValue = newBook.BookStartTime;
+            _context.Entry(book).Property(u => u.BookEndTime).CurrentValue = newBook.BookEndTime;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
