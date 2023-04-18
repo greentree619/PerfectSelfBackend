@@ -24,5 +24,9 @@
         public ReaderProfile._VoiceType VoiceType { get; set; }
         public float ReaderScore { get; set; }
         public String ReaderReview { get; set; }
+        public String? ActorBucketName { get; set; }
+        public String? ActorAvatarKey { get; set; }
+        public String? ReaderBucketName { get; set; }
+        public String? ReaderAvatarKey { get; set; }
     }
 }
