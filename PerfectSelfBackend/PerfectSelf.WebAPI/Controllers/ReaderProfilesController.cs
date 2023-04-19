@@ -271,12 +271,20 @@ namespace PerfectSelf.WebAPI.Controllers
             }
             // don't update if the field is null
             readerProfile.Id = reader.Id;
+            readerProfile.ReaderUid = reader.ReaderUid;
+            readerProfile.IsSponsored = reader.IsSponsored;
+            if (readerProfile.IsExplicitRead == null) readerProfile.IsExplicitRead = reader.IsExplicitRead;
+            if (readerProfile.ReviewCount <= 0) readerProfile.ReviewCount = reader.ReviewCount;
+            if (readerProfile.Score <= 0) readerProfile.Score = reader.Score;
+            if (readerProfile.AuditionType < 0) readerProfile.AuditionType = reader.AuditionType;
             if (readerProfile.About == null || readerProfile.About.Length == 0) readerProfile.About = reader.About;
             if (readerProfile.HourlyPrice <= 0) readerProfile.HourlyPrice = reader.HourlyPrice;
             if (readerProfile.Skills == null || readerProfile.Skills.Length == 0) readerProfile.Skills = reader.Skills;
             if (readerProfile.Title == null || readerProfile.Title.Length == 0) readerProfile.Title = reader.Title;
             if (readerProfile.VoiceType == _VoiceType.Nothing) readerProfile.VoiceType = reader.VoiceType;
             if (readerProfile.Others== _Others.Nothing) readerProfile.Others = reader.Others;
+            if (readerProfile.IntroBucketName == null || readerProfile.IntroBucketName.Length == 0) readerProfile.IntroBucketName = reader.IntroBucketName;
+            if (readerProfile.IntroVideoKey == null || readerProfile.IntroVideoKey.Length == 0) readerProfile.IntroVideoKey = reader.IntroVideoKey;
 
             //_context.Entry(reader).State = EntityState.Modified;
             _context.Entry(reader).CurrentValues.SetValues(readerProfile);

@@ -43,7 +43,7 @@
         public float Score { get; set; } = 0.0f;
         public String Skills { get; set; }
         public bool IsSponsored { get; set; } = false;
-        public bool IsExplicitRead { get; set; } = false;
+        public bool? IsExplicitRead { get; set; } = false;
         public string IntroBucketName { get; set; }
         public string IntroVideoKey { get; set; }
         public int AuditionType { get; set; } = 0;
