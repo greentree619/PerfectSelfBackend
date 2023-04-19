@@ -104,7 +104,7 @@ namespace PerfectSelf.WebAPI.Controllers
                                                                         .Take(1).ToList();
 
             String roomUid = Guid.NewGuid().ToString();
-            if (messageChatHistories != null)
+            if (messageChatHistories != null && messageChatHistories.Count > 0)
             {
                 roomUid = messageChatHistories[0].RoomUid.ToString();
             }
