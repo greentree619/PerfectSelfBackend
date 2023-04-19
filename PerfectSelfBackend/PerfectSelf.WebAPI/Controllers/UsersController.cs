@@ -185,7 +185,22 @@ namespace PerfectSelf.WebAPI.Controllers
 
             return NoContent();
         }
+        // DELETE: api/Users/5
+        [HttpPut("ChangeOnline/{uid}")]
+        public async Task<IActionResult> UpdateOnlineState(string uid, bool state)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Uid.ToString() == uid);
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.IsLogin = state;
+            
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
         private bool UserExists(string uid)
         {
             return _context.Users.Any(e => e.Uid.ToString() == uid);
