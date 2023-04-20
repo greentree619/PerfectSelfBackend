@@ -17,7 +17,7 @@
         }
         public Guid ReaderUid { get; set; }
         public bool IsStandBy { get; set; } = false;
-        public ReapeatType Repeat { get; set; } = ReapeatType.Nothing;
+        public ReapeatType RepeatFlag { get; set; } = ReapeatType.Nothing;
         public DateTime Date { get; set; }
 
         //[JsonConverter(typeof(TimeOnlyJsonConverter))]

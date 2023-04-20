@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("MessageChannelView")]
+    //[Table("MessageChannelView")]
     public class MessageChannelView
     {
         [Key]
