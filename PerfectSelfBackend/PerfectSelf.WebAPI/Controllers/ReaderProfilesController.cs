@@ -226,7 +226,7 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpGet("Detail/{uid}")]
         public async Task<ActionResult> GetReaderDetailProfile(String uid)
         {
-            List<Book> reviewList = _context.Books.Where(row => (row.ReaderUid.ToString() == uid 
+            List<BookList> reviewList = _context.BookLists.Where(row => (row.ReaderUid.ToString() == uid 
                                                         && row.ReaderReview.Length > 0)).ToList();
             List<Availability> availabilityList = _context.Availabilities.Where(row => (row.ReaderUid.ToString() == uid
                                                         && row.Date >= DateTime.Now)).ToList();
