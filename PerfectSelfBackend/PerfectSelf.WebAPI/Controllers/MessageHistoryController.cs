@@ -95,6 +95,15 @@ namespace PerfectSelf.WebAPI.Controllers
             return Ok(new { count = returnValue });
         }
 
+        [HttpGet("GetUnreadCountEx/{uid}")]
+        public async Task<IActionResult> GetUnreadCountEx(String uid)
+        {
+            Int32 unreadCount = _context.MessageHistorys
+                .Where(row => ((row.SenderUid.ToString() == uid || row.ReceiverUid.ToString() == uid)
+                               && row.HadRead == false)).ToList().Count;
+            return Ok(new { uid = uid, unreadCount = unreadCount });
+        }
+
         [HttpGet("GetRoomId/{senderUid}/{receiverUid}")]
         public async Task<IActionResult> GetRoomId(String senderUid, String receiverUid)
         {
@@ -140,6 +149,39 @@ namespace PerfectSelf.WebAPI.Controllers
                 }
             }
 
+            return NoContent();
+        }
+
+        [HttpPut("SetReadMessage/{id}/{flag}")]
+        public async Task<IActionResult> SetReadMessage(int id, bool flag)
+        {
+            var message = await _context.MessageHistorys.FirstOrDefaultAsync(m => m.Id == id);
+            if (message == null)
+            {
+                return NotFound();
+            }
+
+            var messageVal = new MessageHistory();
+            messageVal = message;
+            messageVal.HadRead = flag;
+            //_context.Entry(reader).State = EntityState.Modified;
+            _context.Entry(message).CurrentValues.SetValues(messageVal);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("SetAllReadMessage/{reciverUid}/{senderUid}")]
+        public async Task<IActionResult> SetAllReadMessage(String reciverUid, String senderUid)
+        {
+            //FIXME _context.Database.ExecuteSqlRaw($"EXEC [dbo].[SetAllReadMessage] @receiverUid = N'{reciverUid}', @senderUid = N'{senderUid}'");
             return NoContent();
         }
 

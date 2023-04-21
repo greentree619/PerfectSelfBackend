@@ -99,6 +99,28 @@ namespace PerfectSelf.WebAPI.Controllers
             return CreatedAtAction("GetAvailability", new { id = availability.Id }, availability);
         }
 
+        [HttpPost("AddBatch")]
+        public async Task<ActionResult> AddBatchAvailability(AvailabilityTimeSlotBatch batchSlot)
+        {
+            int addCount = 0;
+            foreach (var timeSlot in batchSlot.batchTimeSlot)
+            {
+                var availability = new Availability{
+                    ReaderUid = batchSlot.ReaderUid,
+                    IsStandBy = timeSlot.IsStandBy,
+                    RepeatFlag = timeSlot.RepeatFlag,
+                    Date = timeSlot.Date,
+                    FromTime = timeSlot.FromTime,
+                    ToTime = timeSlot.ToTime
+                };
+
+                _context.Availabilities.Add(availability);
+                addCount++;
+            }
+            await _context.SaveChangesAsync();
+            return Ok(new { count = addCount });
+        }
+
         // DELETE: api/Availabilities/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAvailability(int id)
