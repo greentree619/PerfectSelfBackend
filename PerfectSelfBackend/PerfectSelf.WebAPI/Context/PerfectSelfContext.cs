@@ -31,6 +31,7 @@
             base.OnModelCreating(modelBuilder);
             modelBuilder.Ignore<ReaderList>();
             modelBuilder.Ignore<BookList>();
+            modelBuilder.Ignore<MessageChannelView>();
             modelBuilder
                .Entity<ReaderList>()
                .ToView("readerlist")
@@ -38,6 +39,10 @@
             modelBuilder
                .Entity<BookList>()
                .ToView("booklist")
+               .HasKey(t => t.Id);
+            modelBuilder
+               .Entity<MessageChannelView>()
+               .ToView("MessageChannelView")
                .HasKey(t => t.Id);
         }
 
@@ -51,6 +56,6 @@
         public DbSet<ReaderList> ReaderLists { get; set; }
         public DbSet<BookList> BookLists { get; set; }
         public DbSet<MessageHistory> MessageHistorys { get; set; }
-        public DbSet<MessageChannelView> MessageChannelHistorys { get; set; }
+        public DbSet<MessageChannelView> MessageChannelViews { get; set; }
     }
 }

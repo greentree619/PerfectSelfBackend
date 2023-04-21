@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerfectSelf.WebAPI.Context;
 
@@ -11,9 +12,10 @@ using PerfectSelf.WebAPI.Context;
 namespace PerfectSelf.WebAPI.Migrations
 {
     [DbContext(typeof(PerfectSelfContext))]
-    partial class PerfectSelfContextModelSnapshot : ModelSnapshot
+    [Migration("20230420235859_migrationV25")]
+    partial class migrationV25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,6 +282,7 @@ namespace PerfectSelf.WebAPI.Migrations
             modelBuilder.Entity("PerfectSelf.WebAPI.Models.MessageChannelView", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
@@ -335,7 +338,7 @@ namespace PerfectSelf.WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToView("MessageChannelView");
+                    b.ToTable("MessageChannelView");
                 });
 
             modelBuilder.Entity("PerfectSelf.WebAPI.Models.MessageHistory", b =>

@@ -6,8 +6,8 @@
     //[Table("MessageChannelView")]
     public class MessageChannelView
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public Guid SenderUid { get; set; }
         public String SenderName { get; set; }
@@ -22,6 +22,6 @@
         public String ReceiverAvatarBucket { get; set; }
         public String ReceiverAvatarKey { get; set; }
         public bool SenderIsOnline { get; set; }
-        public bool ReceiverIsOnline { get; set; }
+        public bool ReceiverIsOnline { get; set; } 
     }
 }
