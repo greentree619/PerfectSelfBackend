@@ -42,22 +42,21 @@ GO
 
 CREATE OR ALTER VIEW [dbo].[MessageChannelUnread]
 AS
-	SELECT dbo.MessageHistory.RoomUid AS RoomUid, COUNT(HadRead) AS UnreadCount
+	SELECT dbo.MessageHistory.RoomUid AS RoomUid, sum(case when HadRead = 0 then 1 else 0 end) AS UnreadCount
 	FROM     dbo.MessageHistory
-	WHERE  (HadRead = 0)
 	GROUP BY dbo.MessageHistory.RoomUid
 GO
-
 
 CREATE OR ALTER VIEW [dbo].[MessageChannelView]
 AS
 WITH added_row_number AS (
   SELECT dbo.MessageHistory.Id, dbo.MessageHistory.RoomUid, dbo.MessageHistory.SenderUid AS SenderUid, dbo.[User].UserName AS SenderName, dbo.MessageHistory.ReceiverUid AS ReceiverUid, User_1.UserName AS ReceiverName, dbo.[User].AvatarBucketName AS SenderAvatarBucket, 
                   dbo.[User].AvatarKey AS SenderAvatarKey, User_1.AvatarBucketName AS ReceiverAvatarBucket, User_1.AvatarKey AS ReceiverAvatarKey, dbo.[User].IsLogin AS SenderIsOnline, User_1.IsLogin AS ReceiverIsOnline, 
-                  dbo.MessageHistory.Message, dbo.MessageHistory.SendTime, dbo.MessageHistory.HadRead, ROW_NUMBER() OVER(PARTITION BY RoomUid order by SendTime desc) AS row_number
+                  dbo.MessageHistory.Message, dbo.MessageHistory.SendTime, dbo.MessageHistory.HadRead, dbo.MessageChannelUnread.UnreadCount, ROW_NUMBER() OVER(PARTITION BY dbo.MessageHistory.RoomUid order by SendTime desc) AS row_number
   FROM     dbo.MessageHistory INNER JOIN
                   dbo.[User] ON dbo.MessageHistory.SenderUid = dbo.[User].Uid INNER JOIN
-                  dbo.[User] AS User_1 ON dbo.MessageHistory.ReceiverUid = User_1.Uid
+                  dbo.[User] AS User_1 ON dbo.MessageHistory.ReceiverUid = User_1.Uid LEFT JOIN
+				  MessageChannelUnread ON MessageChannelUnread.RoomUid = dbo.MessageHistory.RoomUid
 )
 SELECT
   *

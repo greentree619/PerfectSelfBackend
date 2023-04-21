@@ -22,6 +22,7 @@
         public String ReceiverAvatarBucket { get; set; }
         public String ReceiverAvatarKey { get; set; }
         public bool SenderIsOnline { get; set; }
-        public bool ReceiverIsOnline { get; set; } 
+        public bool ReceiverIsOnline { get; set; }
+        public int UnreadCount { get; set; }
     }
 }
