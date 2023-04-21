@@ -181,7 +181,7 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpPut("SetAllReadMessage/{reciverUid}/{senderUid}")]
         public async Task<IActionResult> SetAllReadMessage(String reciverUid, String senderUid)
         {
-            //FIXME _context.Database.ExecuteSqlRaw($"EXEC [dbo].[SetAllReadMessage] @receiverUid = N'{reciverUid}', @senderUid = N'{senderUid}'");
+            _context.Database.ExecuteSqlRaw($"EXEC [dbo].[SetAllReadMessage] @receiverUid = N'{reciverUid}', @SenderUid = N'{senderUid}'");
             return NoContent();
         }
 

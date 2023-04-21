@@ -117,6 +117,23 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE [dbo].[SetAllReadMessage]  
+    (@ReceiverUid NVARCHAR(128), @SenderUid NVARCHAR(128))
+AS  
+BEGIN
+	If @SenderUid = '-1' -- All message to ReceiverUid
+	Begin
+		SET NOCOUNT ON;
+		UPDATE [MessageHistory] SET [HadRead] = 1 WHERE ReceiverUid = @ReceiverUid;
+	End
+	Else -- Only from @SenderUid
+	Begin
+		SET NOCOUNT ON;
+		UPDATE MessageHistory SET HadRead = 1 WHERE ReceiverUid = @ReceiverUid and SenderUid = @SenderUid;
+	End
+END
+GO
+
 ________________________________________________________________________________________
 [Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger][Trigger]
 CREATE OR ALTER TRIGGER TR_Add_DefaultProfile ON [dbo].[User]
