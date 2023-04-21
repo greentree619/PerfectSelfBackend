@@ -51,6 +51,7 @@
         public DbSet<ActorProfile> ActorProfiles { get; set; }
         public DbSet<ReaderProfile> ReaderProfiles { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
+        public DbSet<UnAvailability> UnAvailabilities { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<PerfectSelfVersion> PerfectSelfVersions { get; set; }
         public DbSet<ReaderList> ReaderLists { get; set; }
