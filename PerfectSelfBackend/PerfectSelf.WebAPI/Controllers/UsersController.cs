@@ -64,11 +64,11 @@ namespace PerfectSelf.WebAPI.Controllers
                 return NotFound();
             }
             //user.Uid = u.Uid;
+            u.AvatarBucketName = user.AvatarBucketName;
+            u.AvatarKey = user.AvatarKey;
             if(user.UserName.Length != 0) u.UserName = user.UserName;
             if (user.Password.Length != 0) u.Password = user.Password;
             if (user.FirstName.Length != 0) u.FirstName = user.FirstName;
-            if (user.AvatarBucketName.Length != 0) u.AvatarBucketName = user.AvatarBucketName;
-            if (user.AvatarKey.Length != 0) u.AvatarKey = user.AvatarKey;
             if (user.LastName.Length != 0) u.LastName = user.LastName;
             if (user.Gender >= 0) u.Gender = user.Gender;
             if (user.CurrentAddress.Length != 0) u.CurrentAddress = user.CurrentAddress;
