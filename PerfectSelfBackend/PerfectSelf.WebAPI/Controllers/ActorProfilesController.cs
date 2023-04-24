@@ -115,7 +115,7 @@ namespace PerfectSelf.WebAPI.Controllers
 
         // PUT: api/ActorProfiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("ByUid{uid}")]
+        [HttpPut("ByUid/{uid}")]
         public async Task<IActionResult> PutActorProfileByUid(string uid, ActorProfile actorProfile)
         {
             var actor = await _context.ActorProfiles.FirstOrDefaultAsync(p => p.ActorUid.ToString() == uid);
