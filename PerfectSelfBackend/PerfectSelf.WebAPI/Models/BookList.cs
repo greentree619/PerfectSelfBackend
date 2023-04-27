@@ -12,6 +12,8 @@
         public DateTime BookStartTime { get; set; }
         public DateTime BookEndTime { get; set; }
         public String ScriptFile { get; set; }
+        public String ScriptBucket { get; set; }
+        public String ScriptKey { get; set; }
         public String ActorName { get; set; }
         public String ReaderName { get; set; }
         public Boolean ReaderIsLogin { get; set; }
