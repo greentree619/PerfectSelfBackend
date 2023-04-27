@@ -11,7 +11,9 @@
         public Guid RoomUid { get; set; } = Guid.NewGuid();
         public DateTime BookStartTime { get; set; }
         public DateTime BookEndTime { get; set; }
-        public String ScriptFile { get; set; }
+        public String ScriptFile { get; set; } = "";
+        public String ScriptBucket { get; set; } = "";
+        public String ScriptKey { get; set; } = "";
         public bool IsAccept { get; set; } = false;
         public float ReaderScore { get; set; } = 0;
         public String ReaderReview { get; set; } = "";

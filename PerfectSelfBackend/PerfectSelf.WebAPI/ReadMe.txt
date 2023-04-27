@@ -5,7 +5,7 @@ CREATE OR ALTER VIEW [dbo].[SoonOneAvailability]
 AS
 WITH added_row_number AS (
   SELECT
-    *,
+    ReaderUid, IsStandBy, RepeatFlag, Date ,FromTime, ToTime,
     ROW_NUMBER() OVER(PARTITION BY ReaderUid order by Date) AS row_number
   FROM Availability WHERE Date >= CURRENT_TIMESTAMP
 )
@@ -42,9 +42,9 @@ GO
 
 CREATE OR ALTER VIEW [dbo].[MessageChannelUnread]
 AS
-	SELECT dbo.MessageHistory.RoomUid AS RoomUid, sum(case when HadRead = 0 then 1 else 0 end) AS UnreadCount
+	SELECT dbo.MessageHistory.RoomUid AS RoomUid, dbo.MessageHistory.ReceiverUid, sum(case when HadRead = 0 then 1 else 0 end) AS UnreadCount
 	FROM     dbo.MessageHistory
-	GROUP BY dbo.MessageHistory.RoomUid
+	GROUP BY dbo.MessageHistory.RoomUid, dbo.MessageHistory.ReceiverUid
 GO
 
 CREATE OR ALTER VIEW [dbo].[MessageChannelView]
@@ -56,7 +56,7 @@ WITH added_row_number AS (
   FROM     dbo.MessageHistory INNER JOIN
                   dbo.[User] ON dbo.MessageHistory.SenderUid = dbo.[User].Uid INNER JOIN
                   dbo.[User] AS User_1 ON dbo.MessageHistory.ReceiverUid = User_1.Uid LEFT JOIN
-				  MessageChannelUnread ON MessageChannelUnread.RoomUid = dbo.MessageHistory.RoomUid
+				  MessageChannelUnread ON MessageChannelUnread.RoomUid = dbo.MessageHistory.RoomUid and MessageChannelUnread.ReceiverUid = dbo.MessageHistory.ReceiverUid
 )
 SELECT
   *

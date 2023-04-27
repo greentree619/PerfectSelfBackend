@@ -47,8 +47,7 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpGet("GetChannelHistory/{uid}")]
         public async Task<ActionResult<IEnumerable<MessageChannelView>>> GetChannelHistory(String uid)
         {
-            List<MessageChannelView> messageChannelHistories = _context.MessageChannelViews.Where(row => (row.SenderUid != null && row.ReceiverUid != null  && (row.SenderUid.ToString().CompareTo(uid) == 0 
-                                                                                                                      || row.ReceiverUid.ToString().CompareTo(uid) == 0))).ToList();
+            List<MessageChannelView> messageChannelHistories = _context.MessageChannelViews.Where(row => (row.SenderUid != null && row.ReceiverUid != null && (row.SenderUid.ToString().CompareTo(uid) == 0 || row.ReceiverUid.ToString().CompareTo(uid) == 0))).ToList();
 
             if (messageChannelHistories == null)
             {
