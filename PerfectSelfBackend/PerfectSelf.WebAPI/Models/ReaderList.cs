@@ -15,9 +15,11 @@
         public String? AvatarKey { get; set; }
         public String? Title { get; set; }
         public User.Gender Gender { get; set; }
+        public String? FCMDeviceToken { get; set; }
+        public Int32? DeviceKind { get; set; }
         public Boolean IsLogin { get; set; }
         public bool IsSponsored { get; set; }
-        public bool IsExplicitRead { get; set; }
+        public bool? IsExplicitRead { get; set; }
         public int AuditionType { get; set; }
         public int ReviewCount { get; set; }
         public float Score { get; set; }

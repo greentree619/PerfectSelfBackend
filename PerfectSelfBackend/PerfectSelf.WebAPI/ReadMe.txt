@@ -18,7 +18,7 @@ GO
 CREATE OR ALTER VIEW [dbo].[ReaderList]
 AS
 SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender
-, dbo.[User].IsLogin, dbo.[User].AvatarBucketName, dbo.[User].AvatarKey, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.ReaderProfile.IsSponsored, dbo.ReaderProfile.IsExplicitRead, dbo.ReaderProfile.AuditionType
+, dbo.[User].IsLogin, dbo.[User].AvatarBucketName, dbo.[User].AvatarKey, dbo.[User].FCMDeviceToken, dbo.[User].DeviceKind, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.ReaderProfile.IsSponsored, dbo.ReaderProfile.IsExplicitRead, dbo.ReaderProfile.AuditionType
 , dbo.[User].Uid
 , dbo.ReaderProfile.ReviewCount, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime, dbo.SoonOneAvailability.Date, dbo.SoonOneAvailability.FromTime
 , dbo.SoonOneAvailability.ToTime, dbo.SoonOneAvailability.IsStandBy, DATEDIFF(mi, dbo.SoonOneAvailability.FromTime, dbo.SoonOneAvailability.ToTime) as TimeSlot
