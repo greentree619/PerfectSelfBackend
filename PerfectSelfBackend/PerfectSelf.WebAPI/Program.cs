@@ -1,7 +1,11 @@
+using CorePush.Apple;
+using CorePush.Google;
 using Microsoft.EntityFrameworkCore;
 using PerfectSelf.WebAPI;
 using PerfectSelf.WebAPI.Common;
 using PerfectSelf.WebAPI.Context;
+using PerfectSelf.WebAPI.Models;
+using System.Configuration;
 //using System.Configuration;
 
 var configBuilder = new ConfigurationBuilder()
@@ -19,6 +23,15 @@ builder.Services.AddControllers()
                 //options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
                 //options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
             });
+
+builder.Services.AddTransient<INotificationService, NotificationService>();
+builder.Services.AddHttpClient<FcmSender>();
+builder.Services.AddHttpClient<ApnSender>();
+
+// Configure strongly typed settings objects
+var appSettingsSection = _configuration.GetSection("FcmNotification");
+builder.Services.Configure<FcmNotificationSetting>(appSettingsSection);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

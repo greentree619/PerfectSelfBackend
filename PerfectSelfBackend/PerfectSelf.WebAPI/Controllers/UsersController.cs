@@ -77,6 +77,8 @@ namespace PerfectSelf.WebAPI.Controllers
             if (user.Nationality.Length != 0) u.Nationality = user.Nationality;
             if (user.PhoneNumber.Length != 0) u.PhoneNumber = user.PhoneNumber;
             if (user.UserType != AccountType.Nothing) u.UserType = user.UserType;
+            if (user.FCMDeviceToken != null && user.FCMDeviceToken.Length != 0) u.FCMDeviceToken = user.FCMDeviceToken;
+            if (user.DeviceKind != null && user.DeviceKind != _DeviceKind.Unknown) u.DeviceKind = user.DeviceKind;
 
             _context.Entry(u).State = EntityState.Modified;
             try

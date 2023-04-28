@@ -18,6 +18,14 @@
             Nothing = -1
         }
 
+        public enum _DeviceKind
+        {
+            /*0*/iOS,
+            /*1*/Android,
+            /*2*/Web,
+            Unknown = -1
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Uid { get; set; } = Guid.NewGuid();
         public AccountType UserType { get; set; }
@@ -37,5 +45,7 @@
         public string PhoneNumber { get; set; }
         public bool IsLogin { get; set; } = false;
         public string Token { get; set; }
+        public string FCMDeviceToken { get; set; } = "";
+        public _DeviceKind DeviceKind { get; set; } = _DeviceKind.Unknown;
     }
 }

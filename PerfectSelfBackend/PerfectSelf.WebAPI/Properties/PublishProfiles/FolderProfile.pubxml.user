@@ -5,6 +5,6 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>D:\Workstation\Kayan\PerfectSelfBackendGit\PerfectSelfBackend\PerfectSelf.WebAPI\bin\Release\net6.0\publish\</_PublishTargetUrl>
-    <History>True|2023-04-07T05:04:13.0188370Z;True|2023-03-17T07:48:02.2137787+01:00;</History>
+    <History>True|2023-04-28T04:02:02.4128495Z;True|2023-04-07T07:04:13.0188370+02:00;True|2023-03-17T07:48:02.2137787+01:00;</History>
   </PropertyGroup>
 </Project>
