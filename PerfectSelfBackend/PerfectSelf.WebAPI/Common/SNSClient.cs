@@ -13,6 +13,7 @@ namespace PerfectSelf.WebAPI.Common
         private readonly string _secretKey;
         private readonly string _region;
         private readonly string _topicArn;
+        private AmazonSimpleNotificationServiceClient client;
 
         public SNSClient(string accessKey, string secretKey, string region, string topicArn)
         {
@@ -20,6 +21,7 @@ namespace PerfectSelf.WebAPI.Common
             _secretKey = secretKey;
             _region = region;
             _topicArn = topicArn;
+            client = new AmazonSimpleNotificationServiceClient(_accessKey, _secretKey, Amazon.RegionEndpoint.GetBySystemName(_region));
         }
 
         public async Task PublishNotificationAsync(string message, string deviceId)
@@ -30,8 +32,6 @@ namespace PerfectSelf.WebAPI.Common
                 DataType = "String",
                 StringValue = "10"
             });
-
-            var client = new AmazonSimpleNotificationServiceClient(_accessKey, _secretKey, Amazon.RegionEndpoint.GetBySystemName(_region));
 
             var request = new PublishRequest
             {
@@ -53,26 +53,22 @@ namespace PerfectSelf.WebAPI.Common
             }
         }
 
-        public void SendNotification(string targetArn, string message, string subject)
+        public async Task SendNotification(string targetArn, string message, string subject)
         {
-            var client = new AmazonSimpleNotificationServiceClient(_accessKey, _secretKey, Amazon.RegionEndpoint.GetBySystemName(_region));
-
             var request = new PublishRequest
             {
                 TargetArn = targetArn, // replace with your target ARN
                 MessageStructure = "json",
-                Message = $"{{\"GCM\": {{\"data\": {{\"message\": \"{message}\", \"title\": \"{subject}\"}}, \"notification\": {{\"body\": \"{message}\", \"title\": \"{subject}\"}}}}}}"
+                Message = $"{{\"APNS_SANDBOX\":\"{{\\\"aps\\\":{{\\\"alert\\\":\\\"{message}\\\"}}}}\"}}"
             };
 
-            var response = client.PublishAsync(request);
+            var response = await client.PublishAsync(request);
 
             //Console.WriteLine("Message sent to device with token {0}", deviceToken);
         }
 
         public async Task<string> GetTargetArn(string deviceToken, string platformApplicationArn)
         {
-            var client = new AmazonSimpleNotificationServiceClient(_accessKey, _secretKey, Amazon.RegionEndpoint.GetBySystemName(_region));
-
             var request = new CreatePlatformEndpointRequest
             {
                 PlatformApplicationArn = platformApplicationArn,

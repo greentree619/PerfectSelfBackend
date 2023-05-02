@@ -30,7 +30,7 @@ namespace PerfectSelf.WebAPI.Controllers
             String targetArn = await snsClient.GetTargetArn(notificationModel.DeviceId
                 , "arn:aws:sns:us-east-1:289562772488:app/APNS_SANDBOX/PerfectSelfApp");
 
-            snsClient.SendNotification(targetArn, "You received booking invitation.", "PerfectSelf");
+            await snsClient.SendNotification(targetArn, "You received booking invitation.", "PerfectSelf");
             return Ok();
         }
     }
