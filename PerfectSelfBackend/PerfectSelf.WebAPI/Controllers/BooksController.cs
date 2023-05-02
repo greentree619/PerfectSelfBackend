@@ -57,10 +57,14 @@ namespace PerfectSelf.WebAPI.Controllers
             Nothing = -1
         }
         [HttpGet("DetailList/ByUid/{uid}")]
-        public IActionResult GetReaderListByUid(String uid, BookType? bookType)
+        public IActionResult GetReaderListByUid(String uid, BookType? bookType, String? name)
         {
             IQueryable<BookList> items = _context.BookLists.Where(row => (uid == row.ActorUid.ToString() 
                                 || uid == row.ReaderUid.ToString()));
+            if (name != null)
+            {
+                items = items.Where(row => (row.ReaderName.Contains(name) || row.ActorName.Contains(name)));
+            }
 
             if (bookType != null)
             {
