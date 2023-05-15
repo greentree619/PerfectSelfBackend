@@ -39,7 +39,7 @@ namespace PerfectSelf.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<UnAvailability>>> GetUpcomingUnAvailabilities(String uid, String nowDT)
         {
             DateTime dt;
-            if( !DateTime.TryParse(nowDT, out dt) ) dt = DateTime.Now;
+            if( !DateTime.TryParse(nowDT, out dt) ) dt = DateTime.UtcNow;
             return await _context.UnAvailabilities.Where(row => (uid == row.ReaderUid.ToString() && row.Date >= dt)).ToListAsync();
         }
 

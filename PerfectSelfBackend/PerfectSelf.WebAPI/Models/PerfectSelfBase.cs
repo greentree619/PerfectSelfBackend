@@ -16,8 +16,8 @@
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
-        public DateTime UpdatedTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedTime { get; set; } = DateTime.UtcNow;
         public DateTime DeletedTime { get; set; }
     }
 }

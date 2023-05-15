@@ -102,11 +102,11 @@ namespace PerfectSelf.WebAPI.Controllers
             {
                 if (availableSoon == true)
                 {
-                    queryableLists = queryableLists.Where(r => (r.Date != null && ((DateTime)r.Date).Date == DateTime.Now.Date));
+                    queryableLists = queryableLists.Where(r => (r.Date != null && ((DateTime)r.Date).Date == DateTime.UtcNow.Date));
                 }
                 else
                 {
-                    queryableLists = queryableLists.Where(r => (r.Date == null || ((DateTime)r.Date).Date != DateTime.Now.Date));
+                    queryableLists = queryableLists.Where(r => (r.Date == null || ((DateTime)r.Date).Date != DateTime.UtcNow.Date));
                 }
             }
 
@@ -229,7 +229,7 @@ namespace PerfectSelf.WebAPI.Controllers
             List<BookList> reviewList = _context.BookLists.Where(row => (row.ReaderUid.ToString() == uid 
                                                         && row.ReaderReview.Length > 0)).ToList();
             List<Availability> availabilityList = _context.Availabilities.Where(row => (row.ReaderUid.ToString() == uid
-                                                        && row.Date >= DateTime.Now)).ToList();
+                                                        && row.Date >= DateTime.UtcNow)).ToList();
 
             var ReaderDetailProfile = (from users in _context.Users
                                    join profiles in _context.ReaderProfiles

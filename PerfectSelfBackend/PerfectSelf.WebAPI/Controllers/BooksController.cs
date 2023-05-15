@@ -71,16 +71,16 @@ namespace PerfectSelf.WebAPI.Controllers
                 switch ( bookType )
                 {
                     case BookType.Past:
-                        items = items.Where(row=> (row.BookStartTime != null && ((DateTime)row.BookStartTime) <= DateTime.Now));
+                        items = items.Where(row=> (row.BookStartTime != null && ((DateTime)row.BookStartTime) <= DateTime.UtcNow));
                         break;
                     case BookType.Upcoming:
                         items = items.Where(row => (row.BookStartTime != null
-                                                    && ((DateTime)row.BookStartTime) >= DateTime.Now)
+                                                    && ((DateTime)row.BookStartTime) >= DateTime.UtcNow)
                                                     && row.IsAccept);
                         break;
                     case BookType.Pending:
                         items = items.Where(row => (row.BookStartTime != null
-                                                    && ((DateTime)row.BookStartTime) >= DateTime.Now)
+                                                    && ((DateTime)row.BookStartTime) >= DateTime.UtcNow)
                                                     && row.IsAccept == false);
                         break;
                 }

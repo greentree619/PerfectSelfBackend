@@ -8,7 +8,7 @@ namespace PerfectSelf.WebAPI.Common
     {/*
         public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            DateOnly dt = DateOnly.FromDateTime(DateTime.Now);
+            DateOnly dt = DateOnly.FromDateTime(DateTime.UtcNow);
             try
             {
                 *//*"year": 0,
@@ -39,7 +39,7 @@ namespace PerfectSelf.WebAPI.Common
 
         public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            DateOnly dt = DateOnly.FromDateTime(DateTime.Now);
+            DateOnly dt = DateOnly.FromDateTime(DateTime.UtcNow);
             try
             {
                 dt = DateOnly.ParseExact(reader.GetString()!, Format, CultureInfo.InvariantCulture);
