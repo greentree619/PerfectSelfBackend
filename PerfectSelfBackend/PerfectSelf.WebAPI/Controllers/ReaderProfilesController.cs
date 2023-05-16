@@ -229,7 +229,7 @@ namespace PerfectSelf.WebAPI.Controllers
             List<BookList> reviewList = _context.BookLists.Where(row => (row.ReaderUid.ToString() == uid 
                                                         && row.ReaderReview.Length > 0)).ToList();
             List<Availability> availabilityList = _context.Availabilities.Where(row => (row.ReaderUid.ToString() == uid
-                                                        && row.Date >= DateTime.UtcNow)).ToList();
+                                                        && row.FromTime >= DateTime.UtcNow)).ToList();
 
             var ReaderDetailProfile = (from users in _context.Users
                                    join profiles in _context.ReaderProfiles
