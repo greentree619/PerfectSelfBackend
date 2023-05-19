@@ -99,9 +99,13 @@ namespace PerfectSelf.WebAPI.Controllers
             return CreatedAtAction("GetAvailability", new { id = availability.Id }, availability);
         }
 
-        [HttpPost("AddBatch")]
+        [HttpPut("AddBatch")]
         public async Task<ActionResult> AddBatchAvailability(AvailabilityTimeSlotBatch batchSlot)
         {
+            // Remove reader's previous availability
+            var itemsToRemove = _context.Availabilities.Where(r => batchSlot.ReaderUid.ToString() == r.ReaderUid.ToString());
+            _context.RemoveRange(itemsToRemove);
+
             int addCount = 0;
             foreach (var timeSlot in batchSlot.batchTimeSlot)
             {
@@ -121,37 +125,37 @@ namespace PerfectSelf.WebAPI.Controllers
             return Ok(new { count = addCount });
         }
 
-        [HttpPut("UpdateBatch")]
-        public async Task<ActionResult> UpdateBatchAvailability(List<Availability> batchAvailability)
-        {
-            int addCount = 0;
-            int updateCount = 0;
-            foreach (var availInfo in batchAvailability)
-            {
-                if (availInfo.Id == 0)
-                {
-                    var availability = new Availability
-                    {
-                        ReaderUid = availInfo.ReaderUid,
-                        IsStandBy = availInfo.IsStandBy,
-                        RepeatFlag = availInfo.RepeatFlag,
-                        Date = availInfo.Date,
-                        FromTime = availInfo.FromTime,
-                        ToTime = availInfo.ToTime
-                    };
+        //[HttpPut("UpdateBatch")]
+        //public async Task<ActionResult> UpdateBatchAvailability(List<Availability> batchAvailability)
+        //{
+        //    int addCount = 0;
+        //    int updateCount = 0;
+        //    foreach (var availInfo in batchAvailability)
+        //    {
+        //        if (availInfo.Id == 0)
+        //        {
+        //            var availability = new Availability
+        //            {
+        //                ReaderUid = availInfo.ReaderUid,
+        //                IsStandBy = availInfo.IsStandBy,
+        //                RepeatFlag = availInfo.RepeatFlag,
+        //                Date = availInfo.Date,
+        //                FromTime = availInfo.FromTime,
+        //                ToTime = availInfo.ToTime
+        //            };
 
-                    _context.Availabilities.Add(availability);
-                    addCount++;
-                }
-                else if (availInfo.Id > 0)
-                {
-                    _context.Entry(availInfo).State = EntityState.Modified;
-                    updateCount++;
-                }
-            }
-            await _context.SaveChangesAsync();
-            return Ok(new { add = addCount, updated = updateCount });
-        }
+        //            _context.Availabilities.Add(availability);
+        //            addCount++;
+        //        }
+        //        else if (availInfo.Id > 0)
+        //        {
+        //            _context.Entry(availInfo).State = EntityState.Modified;
+        //            updateCount++;
+        //        }
+        //    }
+        //    await _context.SaveChangesAsync();
+        //    return Ok(new { add = addCount, updated = updateCount });
+        //}
 
         // DELETE: api/Availabilities/5
         [HttpDelete("{id}")]
