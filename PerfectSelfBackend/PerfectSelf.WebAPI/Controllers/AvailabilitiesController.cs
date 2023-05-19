@@ -105,7 +105,7 @@ namespace PerfectSelf.WebAPI.Controllers
             // Remove reader's previous availability
             var itemsToRemove = _context.Availabilities.Where(r => batchSlot.ReaderUid.ToString() == r.ReaderUid.ToString());
             _context.RemoveRange(itemsToRemove);
-
+            await _context.SaveChangesAsync();
             int addCount = 0;
             foreach (var timeSlot in batchSlot.batchTimeSlot)
             {
