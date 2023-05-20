@@ -126,6 +126,7 @@ namespace PerfectSelf.WebAPI.Controllers
         {
             int addCount = 0;
             int updateCount = 0;
+            int deleteCount = 0;
             foreach (var availInfo in batchAvailability)
             {
                 if (availInfo.Id == 0)
@@ -145,12 +146,24 @@ namespace PerfectSelf.WebAPI.Controllers
                 }
                 else if (availInfo.Id > 0)
                 {
-                    _context.Entry(availInfo).State = EntityState.Modified;
-                    updateCount++;
+                    if (availInfo.IsDeleted)
+                    {
+                        var availability = await _context.Availabilities.FindAsync(availInfo.Id);
+                        if (availability != null)
+                        {
+                            _context.Availabilities.Remove(availability);
+                            deleteCount++;
+                        }
+                    }
+                    else
+                    {
+                        _context.Entry(availInfo).State = EntityState.Modified;
+                        updateCount++;
+                    }
                 }
             }
             await _context.SaveChangesAsync();
-            return Ok(new { add = addCount, updated = updateCount });
+            return Ok(new { add = addCount, updated = updateCount, delete = deleteCount });
         }
 
         // DELETE: api/Availabilities/5
