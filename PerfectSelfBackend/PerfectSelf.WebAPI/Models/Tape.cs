@@ -6,9 +6,11 @@
     [Table("Tape")]
     public class Tape : PerfectSelfBase
     {
-        public Guid ReaderUid { get; set; }
+        public Guid ReaderUid { get; set; }//May use uid for actor.
         public string TapeName { get; set; }
         public string BucketName { get; set; }
         public string TapeKey { get; set; }
+        public string RoomUid { get; set; }
+        public string TapeId { get; set; } = DateTime.Now.ToString("HHmmssf");
     }
 }
