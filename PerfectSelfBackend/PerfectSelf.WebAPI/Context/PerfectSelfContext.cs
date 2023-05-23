@@ -31,6 +31,7 @@
             base.OnModelCreating(modelBuilder);
             modelBuilder.Ignore<ReaderList>();
             modelBuilder.Ignore<BookList>();
+            modelBuilder.Ignore<ActorReaderTapMap>();
             modelBuilder.Ignore<MessageChannelView>();
             modelBuilder
                .Entity<ReaderList>()
@@ -44,6 +45,10 @@
                .Entity<MessageChannelView>()
                .ToView("MessageChannelView")
                .HasKey(t => t.Id);
+            modelBuilder
+               .Entity<ActorReaderTapMap>()
+               .ToView("ActorReaderTapMap")
+               .HasKey(t => t.ActorId);
         }
 
         public DbSet<Tape> Tapes { get; set; }
@@ -57,6 +62,7 @@
         public DbSet<PerfectSelfVersion> PerfectSelfVersions { get; set; }
         public DbSet<ReaderList> ReaderLists { get; set; }
         public DbSet<BookList> BookLists { get; set; }
+        public DbSet<ActorReaderTapMap> ActorReaderTapMaps { get; set; }
         public DbSet<MessageHistory> MessageHistorys { get; set; }
         public DbSet<MessageChannelView> MessageChannelViews { get; set; }
     }

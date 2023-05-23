@@ -23,15 +23,15 @@ namespace PerfectSelf.WebAPI.Controllers
 
         // GET: api/Library
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tape>>> GetTapes()
+        public async Task<ActionResult<IEnumerable<ActorReaderTapMap>>> GetTapes()
         {
-            return await _context.Tapes.ToListAsync();
+            return await _context.ActorReaderTapMaps.OrderByDescending(row=>row.CreatedTime).ToListAsync();
         }
 
         [HttpGet("ByUid/{uid}")]
-        public async Task<ActionResult<IEnumerable<Tape>>> GetTapesByUid(String uid)
+        public async Task<ActionResult<IEnumerable<ActorReaderTapMap>>> GetTapesByUid(String uid)
         {
-            var tapes = await _context.Tapes.Where(row => uid == row.ReaderUid.ToString()).ToListAsync();
+            var tapes = await _context.ActorReaderTapMaps.Where(row => uid == row.ActorUid.ToString()).OrderByDescending(row=>row.CreatedTime).ToListAsync();
 
             if (tapes == null)
             {

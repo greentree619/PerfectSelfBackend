@@ -92,6 +92,43 @@ namespace PerfectSelf.WebAPI.Migrations
                     b.ToTable("ActorProfile");
                 });
 
+            modelBuilder.Entity("PerfectSelf.WebAPI.Models.ActorReaderTapMap", b =>
+                {
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActorId"), 1L, 1);
+
+                    b.Property<string>("ActorTapeKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ActorUid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BucketName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReaderTapeKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ReaderUid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoomUid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TapeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ActorId");
+
+                    b.ToView("ActorReaderTapMap");
+                });
+
             modelBuilder.Entity("PerfectSelf.WebAPI.Models.Availability", b =>
                 {
                     b.Property<int>("Id")
