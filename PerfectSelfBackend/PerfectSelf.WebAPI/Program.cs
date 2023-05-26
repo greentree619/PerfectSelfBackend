@@ -8,6 +8,20 @@ using PerfectSelf.WebAPI.Models;
 using System.Configuration;
 //using System.Configuration;
 
+String addressDB = Directory.GetCurrentDirectory() + "\\AddressDB\\";
+if (Directory.Exists(addressDB))
+{
+    try
+    {
+        Task.Run(() => Global.ReadAllAddress(addressDB));
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("Failed initialize for project to language map.");
+        return;
+    }
+}
+
 var configBuilder = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
                         .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
