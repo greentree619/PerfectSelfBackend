@@ -158,7 +158,7 @@ AS
 				Country,
 				State,
 				City,
-				AgencyCountry,
+				Agency,
 				VaccinationStatus,
 				CreatedTime,
 				UpdatedTime,

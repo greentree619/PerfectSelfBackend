@@ -10,6 +10,9 @@
     {
         public enum Vaccination_Status
         {
+            NotVaccinated,
+            PartiallyVaccinated,
+            FullyVaccinated,
             Nothing
         }
         public String Title { get; set; }
@@ -20,7 +23,7 @@
         public String Country { get; set; }
         public String State { get; set; }
         public String City { get; set; }
-        public String AgencyCountry { get; set; }
+        public String Agency { get; set; }
         public int ReviewCount { get; set; } = 0;
         public float Score { get; set; } = 0.0f;
         public Vaccination_Status VaccinationStatus { get; set; }
