@@ -134,6 +134,7 @@ namespace PerfectSelf.WebAPI.Controllers
             if ( actorProfile.ReviewCount > 0) actor.ReviewCount = actorProfile.ReviewCount;
             if ( actorProfile.Score > 0) actor.Score = actorProfile.Score;
             if ( actorProfile.VaccinationStatus != null) actor.VaccinationStatus = actorProfile.VaccinationStatus;
+            if ( actorProfile.Agency != null || actorProfile.Agency.Length != 0) actor.Agency = actorProfile.Agency;
             _context.Entry(actor).State = EntityState.Modified;
 
             try
