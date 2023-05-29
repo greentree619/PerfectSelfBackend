@@ -53,8 +53,9 @@ namespace PerfectSelf.WebAPI.Common
             }
         }
 
-        public async Task SendNotification(string targetArn, string message, string subject)
+        public async Task<PublishResponse> SendNotification(string targetArn, string message, string subject)
         {
+            PublishResponse response = null;
             var request = new PublishRequest
             {
                 TargetArn = targetArn, // replace with your target ARN
@@ -62,9 +63,16 @@ namespace PerfectSelf.WebAPI.Common
                 Message = $"{{\"APNS_SANDBOX\":\"{{\\\"aps\\\":{{\\\"alert\\\":\\\"{message}\\\"}}}}\"}}"
             };
 
-            var response = await client.PublishAsync(request);
-
+            try
+            {
+                response = await client.PublishAsync(request);
+            }
+            catch (Exception ex)
+            {
+                response = null;
+            }
             //Console.WriteLine("Message sent to device with token {0}", deviceToken);
+            return response;
         }
 
         public async Task<string> GetTargetArn(string deviceToken, string platformApplicationArn)
