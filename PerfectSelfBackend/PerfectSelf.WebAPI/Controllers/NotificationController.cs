@@ -33,9 +33,8 @@ namespace PerfectSelf.WebAPI.Controllers
             try
             {
                 targetArn = await snsClient.GetTargetArn(notificationModel.DeviceId
-                    , "arn:aws:sns:us-east-1:289562772488:app/APNS_SANDBOX/PerfectSelfApp");
-
-                response = await snsClient.SendNotification(targetArn, "You received booking invitation.", "PerfectSelf");
+                    , "arn:aws:sns:us-east-1:289562772488:app/APNS/PerfectSelfApp-Live");
+                response = await snsClient.SendNotification(targetArn, "You received booking invitation.", "PerfectSelf", "");
             }
             catch (Exception ex)
             {
@@ -44,6 +43,29 @@ namespace PerfectSelf.WebAPI.Controllers
 
             
             return Ok(new { result = (response != null), error = err});
+        }
+
+        [Route("sendForDev")]
+        [HttpPost]
+        public async Task<IActionResult> SendNotificationForDev(NotificationModel notificationModel)
+        {
+            String targetArn = "";
+            String err = "";
+            PublishResponse response = null;
+            try
+            {
+                targetArn = await snsClient.GetTargetArn(notificationModel.DeviceId
+                    , "arn:aws:sns:us-east-1:289562772488:app/APNS_SANDBOX/PerfectSelfApp");
+
+                response = await snsClient.SendNotification(targetArn, "You received booking invitation.", "PerfectSelf", "_SANDBOX");
+            }
+            catch (Exception ex)
+            {
+                err = ex.Message;
+            }
+
+
+            return Ok(new { result = (response != null), error = err });
         }
     }
 }

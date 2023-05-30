@@ -53,14 +53,14 @@ namespace PerfectSelf.WebAPI.Common
             }
         }
 
-        public async Task<PublishResponse> SendNotification(string targetArn, string message, string subject)
+        public async Task<PublishResponse> SendNotification(string targetArn, string message, string subject, string sandbox)
         {
             PublishResponse response = null;
             var request = new PublishRequest
             {
                 TargetArn = targetArn, // replace with your target ARN
                 MessageStructure = "json",
-                Message = $"{{\"APNS_SANDBOX\":\"{{\\\"aps\\\":{{\\\"alert\\\":\\\"{message}\\\"}}}}\"}}"
+                Message = $"{{\"APNS{sandbox}\":\"{{\\\"aps\\\":{{\\\"alert\\\":\\\"{message}\\\"}}}}\"}}"
             };
 
             try
