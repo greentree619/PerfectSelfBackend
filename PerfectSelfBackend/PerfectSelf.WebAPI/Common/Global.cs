@@ -13,6 +13,7 @@ namespace PerfectSelf.WebAPI.Common
         public static Hashtable countryMap = new Hashtable();
         public static Hashtable stateMap = new Hashtable();
         public static Hashtable cityMap = new Hashtable();
+        public static Hashtable verifyCodeMap = new Hashtable();
         public static String GenToken()
         {
             string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
