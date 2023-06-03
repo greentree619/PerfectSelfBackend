@@ -171,6 +171,47 @@ namespace PerfectSelf.WebAPI.Controllers
             return Ok(new { result = false });
         }
 
+        [HttpGet("VerifyForResetPassword/{email}/{vcode}")]
+        public async Task<ActionResult> VerifyForResetPassword(String email, String vcode)
+        {
+            bool verify = false;
+            String error = "Wrong verify code.";
+            if (Global.verifyCodeMap[email] != null
+                && Global.verifyCodeMap[email].ToString().CompareTo(vcode) == 0)
+            {
+                //Omitted Global.verifyCodeMap[email] = null;
+                verify = true;
+                error = "";
+            }
+            return Ok(new { result = new { email = email, verify = verify, error = error } });
+        }
+
+        [HttpPost("ResetPassword/{email}/{vcode}/{password}")]
+        public async Task<ActionResult> ResetPassword(String email, String vcode, String password)
+        {
+            bool result = false;
+            if (Global.verifyCodeMap[email] != null
+                && Global.verifyCodeMap[email].ToString().CompareTo(vcode) == 0
+                && password.Length > 0)
+            {
+                var u = await _context.Users.FirstOrDefaultAsync(p => p.Email == email);
+                if (u != null)
+                {
+                    u.Password = password;
+                    _context.Entry(u).State = EntityState.Modified;
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {}
+                }
+                Global.verifyCodeMap[email] = null;
+                result = true;
+            }
+            return Ok(new { result = result });
+        }
+
         // DELETE: api/Users/5
         [HttpDelete("{uid}")]
         public async Task<IActionResult> DeleteUser(string uid)

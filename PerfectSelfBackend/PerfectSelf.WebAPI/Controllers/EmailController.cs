@@ -89,24 +89,11 @@ namespace PerfectSelf.WebAPI.Controllers
                     Global.verifyCodeMap[emailAddr] = vcode;
                 }
                 catch (Exception e) {
-                    error = "Failed";
+                    error = "Failed to send verify code to your email.";
                 }
             }
             
             return Ok(new {result = new { email = emailAddr, error = error } });
-        }
-
-        [HttpGet("VerifyForResetPassword/{email}/{vcode}")]
-        public async Task<ActionResult> VerifyForResetPassword(String email, String vcode)
-        {
-            bool verify = false;
-            if (Global.verifyCodeMap[email] != null 
-                && Global.verifyCodeMap[email].ToString().CompareTo(vcode) == 0)
-            {
-                Global.verifyCodeMap[email] = null;
-                verify = true;
-            }
-            return Ok(new { result = new { email = email, verify = verify, error = "" } });
         }
     }
 }

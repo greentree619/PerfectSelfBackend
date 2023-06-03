@@ -22,6 +22,9 @@ if (Directory.Exists(addressDB))
     }
 }
 
+String logFolder = Directory.GetCurrentDirectory() + "\\Log";
+if (!Directory.Exists(logFolder)) Directory.CreateDirectory(logFolder);
+
 var configBuilder = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
                         .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
