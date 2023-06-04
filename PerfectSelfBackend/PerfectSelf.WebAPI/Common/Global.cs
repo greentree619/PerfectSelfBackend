@@ -14,6 +14,8 @@ namespace PerfectSelf.WebAPI.Common
         public static Hashtable stateMap = new Hashtable();
         public static Hashtable cityMap = new Hashtable();
         public static Hashtable verifyCodeMap = new Hashtable();
+        public static Queue<LogInfo> logQueue = new Queue<LogInfo>();
+        public static ManualResetEventSlim _canExecute = new ManualResetEventSlim(true);
         public static String GenToken()
         {
             string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
@@ -71,6 +73,22 @@ namespace PerfectSelf.WebAPI.Common
                         ((Hashtable)cityMap[city.state_id.ToString()])[city.name] = city.id.ToString();
                     }
                 }
+            }
+        }
+
+        public static void LogMessageThread()
+        {
+            while (true)
+            {
+                _canExecute.Wait();
+                while (Global.logQueue.Count > 0)
+                {
+                    var logMap = Global.logQueue.Dequeue();
+                    String logFile = Directory.GetCurrentDirectory() + $"\\Log\\{logMap.uid}.log";
+                    String logContent = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}] {logMap.log}\n";
+                    System.IO.File.AppendAllText(logFile, logContent);
+                }
+                _canExecute.Reset();
             }
         }
     }

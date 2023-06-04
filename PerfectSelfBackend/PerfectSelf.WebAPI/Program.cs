@@ -22,6 +22,9 @@ if (Directory.Exists(addressDB))
     }
 }
 
+//Log Thread
+Task.Run(() => Global.LogMessageThread());
+
 String logFolder = Directory.GetCurrentDirectory() + "\\Log";
 if (!Directory.Exists(logFolder)) Directory.CreateDirectory(logFolder);
 
