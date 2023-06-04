@@ -131,24 +131,36 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<User>> LoginUser(LoginUser user)
         {
-            var userdetails = await _context.Users
-            .SingleOrDefaultAsync(m => m.Email == user.Email);
-            if (userdetails == null || userdetails.UserType != user.UserType)
-            {
-                return NotFound(new { result = false, user= new { }, error= "User Not Found" });
-            }
-            if (userdetails.Password != user.Password)
-            {
-                return BadRequest(new { result = false, user = new { }, error = "Wrong password" });
-            }
-            userdetails.IsLogin = true;
-            userdetails.Token = Common.Global.GenToken();
-            _context.Users.Update(userdetails);
-            _context.SaveChanges();
-            Global.onlineAllUsers[userdetails.Token] = userdetails.Id;
+            var userdetails = await _context.Users.SingleOrDefaultAsync(m => m.Email == user.Email);
 
-            userdetails.Password = "";
-            return Ok(new { result=true, user=userdetails, error = "" });
+            var errorMsg = "";
+
+            if (userdetails == null)
+            {
+                errorMsg = "Email not found.";
+            }
+            else if (userdetails.UserType != user.UserType)
+            {
+                errorMsg = "User type is not correct.";
+            }
+            else if (userdetails.Password != user.Password)
+            {
+                errorMsg = "User Password wrong";
+            }
+            
+            if (errorMsg.Length == 0)
+            {
+                userdetails.IsLogin = true;
+                userdetails.Token = Common.Global.GenToken();
+                _context.Users.Update(userdetails);
+                _context.SaveChanges();
+                Global.onlineAllUsers[userdetails.Token] = userdetails.Id;
+
+                userdetails.Password = "";
+
+                return Ok(new { result = true, user = userdetails, error = "" });
+            }
+            else return BadRequest(new { result = false, user = new { }, error = errorMsg });
         }
 
         [HttpPost("Logout")]
