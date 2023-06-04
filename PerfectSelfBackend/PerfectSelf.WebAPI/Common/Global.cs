@@ -16,6 +16,7 @@ namespace PerfectSelf.WebAPI.Common
         public static Hashtable verifyCodeMap = new Hashtable();
         public static Queue<LogInfo> logQueue = new Queue<LogInfo>();
         public static ManualResetEventSlim _canExecute = new ManualResetEventSlim(true);
+        public static object LockMe = new object();
         public static String GenToken()
         {
             string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
