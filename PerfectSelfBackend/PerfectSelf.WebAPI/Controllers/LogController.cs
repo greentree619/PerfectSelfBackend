@@ -32,14 +32,15 @@ namespace PerfectSelf.WebAPI.Controllers
             bool result = false;
             try
             {
+                var logMap = new LogInfo();
+                logMap.uid = meetingUid;
+                logMap.log = log;
+
                 lock (Global.LockMe)
-                {
-                    var logMap = new LogInfo();
-                    logMap.uid = meetingUid;
-                    logMap.log = log;
+                {   
                     Global.logQueue.Enqueue(logMap);
-                    Global._canExecute.Set();
                 }
+                Global._canExecute.Set();
                 //String logFile = Directory.GetCurrentDirectory() + $"\\Log\\{meetingUid}.log";
                 //String logContent = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}] {log}\n";
                 //System.IO.File.AppendAllText(logFile, logContent);

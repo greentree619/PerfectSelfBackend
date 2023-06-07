@@ -85,9 +85,17 @@ namespace PerfectSelf.WebAPI.Common
                 while (Global.logQueue.Count > 0)
                 {
                     var logMap = Global.logQueue.Dequeue();
-                    String logFile = Directory.GetCurrentDirectory() + $"\\Log\\{logMap.uid}.log";
-                    String logContent = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}] {logMap.log}\n";
-                    System.IO.File.AppendAllText(logFile, logContent);
+                    try
+                    {   
+                        String logFile = Directory.GetCurrentDirectory() + $"\\Log\\{logMap.uid}.log";
+                        String logContent = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}] {logMap.log}\n";
+                        System.IO.File.AppendAllText(logFile, logContent);
+                    }
+                    catch {
+                        String logFile = Directory.GetCurrentDirectory() + $"\\Log\\{logMap.uid}.log";
+                        String logContent = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}] log error!\n";
+                        System.IO.File.AppendAllText(logFile, logContent);
+                    }
                 }
                 _canExecute.Reset();
             }
