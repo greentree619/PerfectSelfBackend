@@ -139,10 +139,10 @@ namespace PerfectSelf.WebAPI.Controllers
             {
                 errorMsg = "Email not found.";
             }
-            else if (userdetails.UserType != user.UserType)
-            {
-                errorMsg = "User type is not correct.";
-            }
+            //else if (userdetails.UserType != user.UserType)
+            //{
+            //    errorMsg = "User type is not correct.";
+            //}
             else if (userdetails.Password != user.Password)
             {
                 errorMsg = "User Password wrong";
