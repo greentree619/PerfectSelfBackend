@@ -8,7 +8,15 @@
         {
             Male,
             Female,
-            Decline,
+            NonBinary,
+            Genderqueer,
+            Genderfluid,
+            Transgender,
+            Agender,
+            Bigender,
+            TwoSpirit,
+            Androgynous,
+            Unkown,
             Nothing
         }
 

@@ -62,7 +62,7 @@ namespace PerfectSelf.WebAPI.Controllers
                                             DateTime? availableTo,
                                             float? minPrice,
                                             float? maxPrice,
-                                            PerfectSelfBase.Gender? gender,
+                                            [FromQuery(Name = "genders")] PerfectSelfBase.Gender[]? genders,
                                             ReaderListSortType? sortBy )
         {
             //DbSet<ReaderList> readerLists = _context.ReaderLists;
@@ -170,9 +170,9 @@ namespace PerfectSelf.WebAPI.Controllers
             }
 
             //PerfectSelfBase.Gender? gender,
-            if (gender != null)
+            if (genders != null)
             {
-                queryableLists = queryableLists.Where(r => (r.Gender== gender));
+                queryableLists = queryableLists.Where(r => ( genders.Contains(r.Gender)));
             }
 
             //ReaderListSortType? sortBy
