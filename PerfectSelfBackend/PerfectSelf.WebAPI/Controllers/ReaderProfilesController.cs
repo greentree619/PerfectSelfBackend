@@ -248,6 +248,8 @@ namespace PerfectSelf.WebAPI.Controllers
                                        profiles.About,
                                        profiles.Skills,
                                        profiles.Score,
+                                       profiles.AuditionType,
+                                       profiles.IsExplicitRead,
                                        profiles.IntroBucketName,
                                        profiles.IntroVideoKey,
                                        BookPassCount = reviewList.Count,
