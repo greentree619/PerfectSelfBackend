@@ -170,7 +170,7 @@ namespace PerfectSelf.WebAPI.Controllers
             }
 
             //PerfectSelfBase.Gender? gender,
-            if (genders != null)
+            if (genders != null && genders.Length > 0)
             {
                 queryableLists = queryableLists.Where(r => ( genders.Contains(r.Gender)));
             }
