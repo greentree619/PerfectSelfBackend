@@ -113,6 +113,24 @@ namespace PerfectSelf.WebAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete("DeleteBy/{uid}/{tapeKey}/{roomUid}")]
+        public async Task<IActionResult> DeleteTapeBy(String uid, String tapeKey, String roomUid)
+        {
+            String tapKeyStr = Uri.UnescapeDataString(tapeKey);
+            var tape = _context.Tapes.Where(row => (row.ReaderUid.ToString() == uid 
+                                                && row.TapeKey == tapKeyStr
+                                                && row.RoomUid == roomUid)).First();
+            if (tape == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tapes.Remove(tape);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         private bool TapeExists(int id)
         {
             return _context.Tapes.Any(e => e.Id == id);
