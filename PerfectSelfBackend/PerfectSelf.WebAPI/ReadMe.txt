@@ -231,3 +231,18 @@ BEGIN
 		END
      End
 GO
+
+CREATE OR ALTER TRIGGER TR_Update_BookScore ON [dbo].[Book]
+    AFTER UPDATE
+AS
+BEGIN
+	    SET NOCOUNT ON
+		Update dbo.ReaderProfile SET dbo.ReaderProfile.Score = (
+															  Select ISNULL(ROUND(AVG(ReaderScore), 1), 0 )
+															  from Book 
+															  where ReaderUid = (SELECT inserted.ReaderUid FROM inserted) 
+															  and IsAccept = 1 and ReaderReview IS NOt NULL and ReaderReview <> ''
+															  )
+				WHERE dbo.ReaderProfile.ReaderUid = (SELECT inserted.ReaderUid FROM inserted)
+     End
+GO
