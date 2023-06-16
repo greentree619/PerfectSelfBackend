@@ -248,6 +248,8 @@ namespace PerfectSelf.WebAPI.Controllers
                                        profiles.About,
                                        profiles.Skills,
                                        profiles.Score,
+                                       profiles.AuditionType,
+                                       profiles.IsExplicitRead,
                                        profiles.IntroBucketName,
                                        profiles.IntroVideoKey,
                                        BookPassCount = reviewList.Count,
@@ -279,7 +281,7 @@ namespace PerfectSelf.WebAPI.Controllers
             if (readerProfile.AuditionType < 0) readerProfile.AuditionType = reader.AuditionType;
             if (readerProfile.About == null || readerProfile.About.Length == 0) readerProfile.About = reader.About;
             if (readerProfile.HourlyPrice <= 0) readerProfile.HourlyPrice = reader.HourlyPrice;
-            if (readerProfile.Skills == null || readerProfile.Skills.Length == 0) readerProfile.Skills = reader.Skills;
+            if (readerProfile.Skills == null) readerProfile.Skills = reader.Skills;
             if (readerProfile.Title == null || readerProfile.Title.Length == 0) readerProfile.Title = reader.Title;
             if (readerProfile.VoiceType == _VoiceType.Nothing) readerProfile.VoiceType = reader.VoiceType;
             if (readerProfile.Others== _Others.Nothing) readerProfile.Others = reader.Others;
