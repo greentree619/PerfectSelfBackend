@@ -41,6 +41,15 @@ namespace PerfectSelf.WebAPI.Controllers
             return tapes;
         }
 
+        [HttpGet("CountByTapeKey/{tapeKey}")]
+        public async Task<ActionResult> GetCountByTapeKey(String tapeKey)
+        {
+            String tapKeyStr = Uri.UnescapeDataString(tapeKey);
+            int count = _context.Tapes.Where(row => ( row.TapeKey == tapKeyStr )).ToList().Count;
+
+            return Ok(new { tapeCount = count });
+        }
+
         // GET: api/Library/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Tape>> GetTape(int id)
@@ -113,13 +122,14 @@ namespace PerfectSelf.WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("DeleteBy/{uid}/{tapeKey}/{roomUid}")]
-        public async Task<IActionResult> DeleteTapeBy(String uid, String tapeKey, String roomUid)
+        [HttpDelete("DeleteBy/{uid}/{tapeKey}/{roomUid}/{tapeId}")]
+        public async Task<IActionResult> DeleteTapeBy(String uid, String tapeKey, String roomUid, String tapeId)
         {
             String tapKeyStr = Uri.UnescapeDataString(tapeKey);
             var tape = _context.Tapes.Where(row => (row.ReaderUid.ToString() == uid 
                                                 && row.TapeKey == tapKeyStr
-                                                && row.RoomUid == roomUid)).First();
+                                                && row.RoomUid == roomUid
+                                                && row.TapeId == tapeId)).First();
             if (tape == null)
             {
                 return NotFound();
