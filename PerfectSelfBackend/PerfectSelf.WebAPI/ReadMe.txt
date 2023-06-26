@@ -242,6 +242,12 @@ BEGIN
 															  from Book 
 															  where ReaderUid = (SELECT inserted.ReaderUid FROM inserted) 
 															  and IsAccept = 1 and ReaderReview IS NOt NULL and ReaderReview <> ''
+															  ),
+									dbo.ReaderProfile.ReviewCount = (
+															  Select ISNULL(Count(ReaderUid), 0 )
+															  from Book 
+															  where ReaderUid = (SELECT inserted.ReaderUid FROM inserted) 
+															  and IsAccept = 1 and ReaderReview IS NOt NULL and ReaderReview <> ''
 															  )
 				WHERE dbo.ReaderProfile.ReaderUid = (SELECT inserted.ReaderUid FROM inserted)
      End

@@ -30,9 +30,18 @@ namespace PerfectSelf.WebAPI.Controllers
         }
 
         [HttpGet("ByUid/{uid}")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByUid(String uid)
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByUid(String uid, int? inMin)
         {
-            var books = await _context.Books.Where(row => (uid == row.ActorUid.ToString() || uid == row.ReaderUid.ToString())).ToListAsync();
+            DateTime rangeStart = DateTime.UtcNow;
+            DateTime rangeEnd = DateTime.UtcNow.AddDays(365);
+            if (inMin != null) {
+                rangeEnd = rangeStart.AddMinutes((double)inMin);
+            }
+
+            var books = await _context.Books.Where(row => 
+            ((uid == row.ActorUid.ToString() || uid == row.ReaderUid.ToString())
+            && row.IsAccept
+            && rangeStart <= row.BookStartTime && row.BookStartTime < rangeEnd)).ToListAsync();
 
             if (books == null)
             {
