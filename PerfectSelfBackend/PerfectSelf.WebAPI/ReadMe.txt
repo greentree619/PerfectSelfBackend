@@ -72,6 +72,17 @@ FROM     dbo.[Tape] INNER JOIN
                   dbo.[User] ON dbo.[Tape].ReaderUid = dbo.[User].Uid AND dbo.[User].UserType = 3 LEFT OUTER JOIN
                   dbo.[Tape] AS Tape_1 ON dbo.[Tape].RoomUid = Tape_1.RoomUid AND dbo.[Tape].TapeId = Tape_1.TapeId AND dbo.[Tape].Id <> Tape_1.Id
 GO
+
+CREATE OR ALTER VIEW [dbo].[ReaderSessionCount]
+AS
+SELECT dbo.[User].Uid, ( Select ISNULL(Count(ReaderUid), 0 )
+						from Book 
+						where ReaderUid = dbo.[User].Uid
+						and IsAccept = 1 and Book.BookStartTime >= GETUTCDATE()
+						) as SessionCount
+FROM     dbo.[User]
+WHERE  (dbo.[User].UserType = 4 )
+GO
 ________________________________________________________________________________________
 [Procedure][Procedure][Procedure][Procedure][Procedure][Procedure][Procedure][Procedure]
 

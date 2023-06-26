@@ -230,6 +230,9 @@ namespace PerfectSelf.WebAPI.Controllers
                                                         && row.ReaderReview.Length > 0)).ToList();
             List<Availability> availabilityList = _context.Availabilities.Where(row => (row.ReaderUid.ToString() == uid
                                                         && row.FromTime >= DateTime.UtcNow)).ToList();
+            ReaderSessionCount readerSessionCount = _context.ReaderSessionCounts.Where(row => (row.Uid.ToString() == uid)).First();
+            int sessionCount = 0;
+            if (readerSessionCount != null) sessionCount = readerSessionCount.SessionCount;
 
             var ReaderDetailProfile = (from users in _context.Users
                                    join profiles in _context.ReaderProfiles
@@ -254,7 +257,8 @@ namespace PerfectSelf.WebAPI.Controllers
                                        profiles.IntroVideoKey,
                                        BookPassCount = reviewList.Count,
                                        AllAvailability = availabilityList,
-                                       ReviewLists = reviewList
+                                       ReviewLists = reviewList,
+                                       SessionCount = sessionCount
                                    }).Single();
 
             return Ok(ReaderDetailProfile);

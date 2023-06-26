@@ -41,7 +41,7 @@ namespace PerfectSelf.WebAPI.Controllers
             var books = await _context.Books.Where(row => 
             ((uid == row.ActorUid.ToString() || uid == row.ReaderUid.ToString())
             && row.IsAccept
-            && rangeStart <= row.BookStartTime && row.BookStartTime < rangeEnd)).ToListAsync();
+            && rangeStart <= row.BookStartTime && row.BookStartTime < rangeEnd)).OrderBy(r=>r.BookStartTime).ToListAsync();
 
             if (books == null)
             {

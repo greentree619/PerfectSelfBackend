@@ -33,6 +33,7 @@
             modelBuilder.Ignore<BookList>();
             modelBuilder.Ignore<ActorReaderTapMap>();
             modelBuilder.Ignore<MessageChannelView>();
+            modelBuilder.Ignore<ReaderSessionCount>();
             modelBuilder
                .Entity<ReaderList>()
                .ToView("readerlist")
@@ -49,6 +50,10 @@
                .Entity<ActorReaderTapMap>()
                .ToView("ActorReaderTapMap")
                .HasKey(t => t.ActorId);
+            modelBuilder
+               .Entity<ReaderSessionCount>()
+               .ToView("ReaderSessionCount")
+               .HasKey(t => t.Uid);
         }
 
         public DbSet<Tape> Tapes { get; set; }
@@ -65,5 +70,6 @@
         public DbSet<ActorReaderTapMap> ActorReaderTapMaps { get; set; }
         public DbSet<MessageHistory> MessageHistorys { get; set; }
         public DbSet<MessageChannelView> MessageChannelViews { get; set; }
+        public DbSet<ReaderSessionCount> ReaderSessionCounts { get; set; }
     }
 }
