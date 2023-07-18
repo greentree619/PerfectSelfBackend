@@ -41,7 +41,7 @@
         public String About { get; set; }
         public int ReviewCount { get; set; } = 0;
         public float Score { get; set; } = 0.0f;
-        public String Skills { get; set; }
+        public String? Skills { get; set; }
         public bool IsSponsored { get; set; } = false;
         public bool? IsExplicitRead { get; set; } = false;
         public string IntroBucketName { get; set; }

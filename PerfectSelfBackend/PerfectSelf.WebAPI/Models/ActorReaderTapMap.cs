@@ -12,6 +12,7 @@
         public String? ReaderTapeKey { get; set; }
         public String RoomUid { get; set; }
         public String TapeId { get; set; }
+        public String? ReaderName { get; set; }
         public Guid ActorUid { get; set; }
         public Guid? ReaderUid { get; set; }
         public DateTime CreatedTime { get; set; }
