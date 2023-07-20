@@ -9,6 +9,7 @@
         public Guid ActorUid { get; set; }
         public Guid ReaderUid { get; set; }
         public Guid RoomUid { get; set; } = Guid.NewGuid();
+        public String ProjectName { get; set; } = "";
         public DateTime BookStartTime { get; set; }
         public DateTime BookEndTime { get; set; }
         public String ScriptFile { get; set; } = "";

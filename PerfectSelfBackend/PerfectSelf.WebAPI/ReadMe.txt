@@ -32,7 +32,7 @@ Drop VIEW [dbo].[BookList]
 Go
 CREATE OR ALTER VIEW [dbo].[BookList]
 AS
-SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.BookStartTime, dbo.Book.ScriptBucket, dbo.Book.ScriptKey, dbo.Book.ScriptFile, dbo.Book.BookEndTime, dbo.Book.IsAccept, dbo.Book.ReaderScore, dbo.Book.ReaderReview, dbo.Book.ReaderReviewDate, User_1.UserName AS ReaderName, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, 
+SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.ProjectName, dbo.Book.BookStartTime, dbo.Book.ScriptBucket, dbo.Book.ScriptKey, dbo.Book.ScriptFile, dbo.Book.BookEndTime, dbo.Book.IsAccept, dbo.Book.ReaderScore, dbo.Book.ReaderReview, dbo.Book.ReaderReviewDate, User_1.UserName AS ReaderName, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, 
                   dbo.ReaderProfile.VoiceType, dbo.ReaderProfile.Others, dbo.Book.ActorUid, dbo.Book.ReaderUid, dbo.ReaderProfile.About, dbo.ReaderProfile.Skills, dbo.[User].UserName AS ActorName, dbo.[User].AvatarBucketName AS ActorBucketName,dbo.[User].AvatarKey AS ActorAvatarKey,User_1.AvatarBucketName AS ReaderBucketName,User_1.AvatarKey As ReaderAvatarKey
 FROM     dbo.Book INNER JOIN
                   dbo.[User] ON dbo.Book.ActorUid = dbo.[User].Uid INNER JOIN
