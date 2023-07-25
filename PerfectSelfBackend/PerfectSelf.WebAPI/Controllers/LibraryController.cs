@@ -29,11 +29,14 @@ namespace PerfectSelf.WebAPI.Controllers
         }
 
         [HttpGet("ByUid/{uid}")]
-        public async Task<ActionResult<IEnumerable<ActorReaderTapMap>>> GetTapesByUid(String uid, String? parentId = "")
+        public async Task<ActionResult<IEnumerable<ActorReaderTapMap>>> GetTapesByUid(String uid, String? parentId = "", String? keyword = "")
         {
             if (parentId == null) parentId = "";
+            if (keyword == null) keyword = "";
+
             var tapes = await _context.ActorReaderTapMaps.Where(row => (uid == row.ActorUid.ToString()
-                                                                        && parentId == row.ParentId)).OrderByDescending(row=>row.CreatedTime).ToListAsync();
+                                                                        && parentId == row.ParentId
+                                                                        && row.TapeName.Contains(keyword))).OrderByDescending(row=>row.CreatedTime).ToListAsync();
 
             if (tapes == null)
             {
@@ -102,15 +105,20 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Tape>> PostTape(Tape tape)
         {
-            if (IsFolder(tape)) {
-                var exists = await _context.Tapes.Where(row => (row.TapeKey.Length == 0 
+            if (IsFolder(tape))
+            {
+                var exists = await _context.Tapes.Where(row => (row.TapeKey.Length == 0
                                                                 && row.ParentId.Length == 0
-                                                                && row.TapeName == tape.TapeName
-                                                                && row.ReaderUid == tape.ReaderUid)).FirstOrDefaultAsync();
+                                                                && row.RoomUid == tape.RoomUid)).FirstOrDefaultAsync();
                 if (exists != null)
                 {
-                    return Ok(new { id = -1});
+                    return Ok(new { id = -1 });
                 }
+            }
+            else {
+                var count = await _context.Tapes.Where(row => (row.RoomUid == tape.RoomUid)).CountAsync();
+                count = count / 2 + 1;
+                tape.TapeName = $"{tape.TapeName}-Take({count})";
             }
 
             _context.Tapes.Add(tape);
