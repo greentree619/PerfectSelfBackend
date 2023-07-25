@@ -66,7 +66,7 @@ GO
 
 CREATE OR ALTER VIEW [dbo].[ActorReaderTapMap]
 AS
-SELECT dbo.[Tape].TapeName, dbo.[Tape].BucketName, dbo.[Tape].TapeKey AS ActorTapeKey, dbo.[Tape].TapeId, dbo.[Tape].RoomUid, dbo.[Tape].Id AS ActorId, dbo.[Tape].ReaderUid AS ActorUid, dbo.[User].UserType, 
+SELECT dbo.[Tape].TapeName, dbo.[Tape].BucketName, dbo.[Tape].TapeKey AS ActorTapeKey, dbo.[Tape].TapeId, dbo.[Tape].RoomUid, dbo.[Tape].ParentId, dbo.[Tape].Id AS ActorId, dbo.[Tape].ReaderUid AS ActorUid, dbo.[User].UserType, 
                   Tape_1.TapeKey AS ReaderTapeKey, Tape_1.ReaderUid, Tape_1.Id AS ReaderId, dbo.[Tape].CreatedTime, dbo.[Tape].UpdatedTime, dbo.[Tape].DeletedTime, dbo.[User].UserName, User_1.UserName AS ReaderName
 FROM     dbo.[User] AS User_1 INNER JOIN
                   dbo.[Tape] AS Tape_1 ON User_1.Uid = Tape_1.ReaderUid RIGHT OUTER JOIN

@@ -29,9 +29,11 @@ namespace PerfectSelf.WebAPI.Controllers
         }
 
         [HttpGet("ByUid/{uid}")]
-        public async Task<ActionResult<IEnumerable<ActorReaderTapMap>>> GetTapesByUid(String uid)
+        public async Task<ActionResult<IEnumerable<ActorReaderTapMap>>> GetTapesByUid(String uid, String? parentId = "")
         {
-            var tapes = await _context.ActorReaderTapMaps.Where(row => uid == row.ActorUid.ToString()).OrderByDescending(row=>row.CreatedTime).ToListAsync();
+            if (parentId == null) parentId = "";
+            var tapes = await _context.ActorReaderTapMaps.Where(row => (uid == row.ActorUid.ToString()
+                                                                        && parentId == row.ParentId)).OrderByDescending(row=>row.CreatedTime).ToListAsync();
 
             if (tapes == null)
             {
@@ -100,6 +102,17 @@ namespace PerfectSelf.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Tape>> PostTape(Tape tape)
         {
+            if (IsFolder(tape)) {
+                var exists = await _context.Tapes.Where(row => (row.TapeKey.Length == 0 
+                                                                && row.ParentId.Length == 0
+                                                                && row.TapeName == tape.TapeName
+                                                                && row.ReaderUid == tape.ReaderUid)).FirstOrDefaultAsync();
+                if (exists != null)
+                {
+                    return Ok(new { id = -1});
+                }
+            }
+
             _context.Tapes.Add(tape);
             await _context.SaveChangesAsync();
 
@@ -144,6 +157,14 @@ namespace PerfectSelf.WebAPI.Controllers
         private bool TapeExists(int id)
         {
             return _context.Tapes.Any(e => e.Id == id);
+        }
+
+        private bool IsFolder(Tape tape) 
+        {
+            bool ret = false;
+            if (tape.TapeKey == "" && tape.ParentId == "") ret = true;
+
+            return ret;
         }
     }
 }
