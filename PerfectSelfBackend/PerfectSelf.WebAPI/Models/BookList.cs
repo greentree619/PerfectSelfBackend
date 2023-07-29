@@ -22,6 +22,8 @@
         public Boolean ReaderIsLogin { get; set; }
         public bool IsAccept { get; set; }
         public String Title { get; set; }
+        public double? Min15Price { get; set; }
+        public double? Min30Price { get; set; }
         public double? HourlyPrice { get; set; }
         public ReaderProfile._Others Others { get; set; }
         public String About { get; set; }

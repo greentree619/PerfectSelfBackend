@@ -245,6 +245,8 @@ namespace PerfectSelf.WebAPI.Controllers
                                        users.AvatarBucketName,
                                        users.AvatarKey,
                                        profiles.Title,
+                                       profiles.Min15Price,
+                                       profiles.Min30Price,
                                        profiles.HourlyPrice,
                                        profiles.Others,
                                        profiles.VoiceType,
@@ -284,6 +286,8 @@ namespace PerfectSelf.WebAPI.Controllers
             if (readerProfile.Score <= 0) readerProfile.Score = reader.Score;
             if (readerProfile.AuditionType < 0) readerProfile.AuditionType = reader.AuditionType;
             if (readerProfile.About == null || readerProfile.About.Length == 0) readerProfile.About = reader.About;
+            if (readerProfile.Min15Price <= 0) readerProfile.Min15Price = reader.Min15Price;
+            if (readerProfile.Min30Price <= 0) readerProfile.Min30Price = reader.Min30Price;
             if (readerProfile.HourlyPrice <= 0) readerProfile.HourlyPrice = reader.HourlyPrice;
             if (readerProfile.Skills == null) readerProfile.Skills = reader.Skills;
             if (readerProfile.Title == null || readerProfile.Title.Length == 0) readerProfile.Title = reader.Title;

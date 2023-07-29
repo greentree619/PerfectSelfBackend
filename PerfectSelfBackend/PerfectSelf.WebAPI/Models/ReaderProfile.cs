@@ -35,7 +35,9 @@
         
         public String Title { get; set; }
         public Guid ReaderUid { get; set; }
-        public double HourlyPrice { get; set; }
+        public double Min15Price { get; set; } = 0.0f;
+        public double Min30Price { get; set; } = 0.0f;
+        public double HourlyPrice { get; set; } = 0.0f;
         public _VoiceType VoiceType { get; set; }
         public _Others Others { get; set; }
         public String About { get; set; }

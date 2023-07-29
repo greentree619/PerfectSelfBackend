@@ -23,6 +23,8 @@
         public int AuditionType { get; set; }
         public int ReviewCount { get; set; }
         public float Score { get; set; }
+        public double? Min15Price { get; set; }
+        public double? Min30Price { get; set; }
         public double? HourlyPrice { get; set; }
         public bool? IsStandBy { get; set; }
         public DateTime? FromTime { get; set; }

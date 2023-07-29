@@ -18,7 +18,7 @@ GO
 CREATE OR ALTER VIEW [dbo].[ReaderList]
 AS
 SELECT dbo.[User].UserName, dbo.[User].UserType, dbo.[User].Email, dbo.[User].FirstName, dbo.[User].LastName, dbo.[User].Gender
-, dbo.[User].IsLogin, dbo.[User].AvatarBucketName, dbo.[User].AvatarKey, dbo.[User].FCMDeviceToken, dbo.[User].DeviceKind, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.ReaderProfile.IsSponsored, dbo.ReaderProfile.IsExplicitRead, dbo.ReaderProfile.AuditionType
+, dbo.[User].IsLogin, dbo.[User].AvatarBucketName, dbo.[User].AvatarKey, dbo.[User].FCMDeviceToken, dbo.[User].DeviceKind, dbo.ReaderProfile.Min15Price, dbo.ReaderProfile.Min30Price, dbo.ReaderProfile.HourlyPrice, dbo.ReaderProfile.Title, dbo.ReaderProfile.IsSponsored, dbo.ReaderProfile.IsExplicitRead, dbo.ReaderProfile.AuditionType
 , dbo.[User].Uid
 , dbo.ReaderProfile.ReviewCount, dbo.ReaderProfile.Score, dbo.ReaderProfile.CreatedTime, dbo.SoonOneAvailability.Date, dbo.SoonOneAvailability.FromTime
 , dbo.SoonOneAvailability.ToTime, dbo.SoonOneAvailability.IsStandBy, DATEDIFF(mi, dbo.SoonOneAvailability.FromTime, dbo.SoonOneAvailability.ToTime) as TimeSlot
@@ -32,7 +32,7 @@ Drop VIEW [dbo].[BookList]
 Go
 CREATE OR ALTER VIEW [dbo].[BookList]
 AS
-SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.ProjectName, dbo.Book.BookStartTime, dbo.Book.ScriptBucket, dbo.Book.ScriptKey, dbo.Book.ScriptFile, dbo.Book.BookEndTime, dbo.Book.IsAccept, dbo.Book.ReaderScore, dbo.Book.ReaderReview, dbo.Book.ReaderReviewDate, User_1.UserName AS ReaderName, User_1.FCMDeviceToken AS ReaderFCMDeviceToken, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.HourlyPrice, 
+SELECT dbo.Book.Id, dbo.Book.RoomUid, dbo.Book.ProjectName, dbo.Book.BookStartTime, dbo.Book.ScriptBucket, dbo.Book.ScriptKey, dbo.Book.ScriptFile, dbo.Book.BookEndTime, dbo.Book.IsAccept, dbo.Book.ReaderScore, dbo.Book.ReaderReview, dbo.Book.ReaderReviewDate, User_1.UserName AS ReaderName, User_1.FCMDeviceToken AS ReaderFCMDeviceToken, User_1.IsLogin AS ReaderIsLogin, dbo.ReaderProfile.Title, dbo.ReaderProfile.Min15Price, dbo.ReaderProfile.Min30Price, dbo.ReaderProfile.HourlyPrice, 
                   dbo.ReaderProfile.VoiceType, dbo.ReaderProfile.Others, dbo.Book.ActorUid, dbo.Book.ReaderUid, dbo.ReaderProfile.About, dbo.ReaderProfile.Skills, dbo.[User].UserName AS ActorName, dbo.[User].FCMDeviceToken AS ActorFCMDeviceToken, dbo.[User].AvatarBucketName AS ActorBucketName,dbo.[User].AvatarKey AS ActorAvatarKey,User_1.AvatarBucketName AS ReaderBucketName,User_1.AvatarKey As ReaderAvatarKey
 FROM     dbo.Book INNER JOIN
                   dbo.[User] ON dbo.Book.ActorUid = dbo.[User].Uid INNER JOIN
