@@ -100,6 +100,21 @@ namespace PerfectSelf.WebAPI.Controllers
             return NoContent();
         }
 
+        [HttpPut("UpdateTapeFolder/{tapeId}")]
+        public async Task<IActionResult> UpdateTapeFolder(String tapeId, String? parentId="")
+        {
+            if (tapeId == null || parentId == null || tapeId.Length == 0)
+            {
+                return BadRequest();
+            }
+
+            var tapes = _context.Tapes.Where(r => r.TapeId == tapeId);
+            await tapes.ForEachAsync(a=>a.ParentId = parentId);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // POST: api/Library
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -147,6 +162,8 @@ namespace PerfectSelf.WebAPI.Controllers
         public async Task<IActionResult> DeleteTapeBy(String uid, String tapeKey, String roomUid, String tapeId)
         {
             String tapKeyStr = Uri.UnescapeDataString(tapeKey);
+            if (tapKeyStr.CompareTo("0") == 0) tapKeyStr = "";//For delete folder
+
             var tape = _context.Tapes.Where(row => (row.ReaderUid.ToString() == uid 
                                                 && row.TapeKey == tapKeyStr
                                                 && row.RoomUid == roomUid
