@@ -8,16 +8,17 @@
         {
             Male,
             Female,
-            NonBinary,
-            Genderqueer,
-            Genderfluid,
-            Transgender,
-            Agender,
-            Bigender,
-            TwoSpirit,
-            Androgynous,
-            Unkown,
-            Nothing
+            Other,
+            //NonBinary,
+            //Genderqueer,
+            //Genderfluid,
+            //Transgender,
+            //Agender,
+            //Bigender,
+            //TwoSpirit,
+            //Androgynous,
+            //Unkown,
+            Nothing = -1
         }
 
         [Key]
