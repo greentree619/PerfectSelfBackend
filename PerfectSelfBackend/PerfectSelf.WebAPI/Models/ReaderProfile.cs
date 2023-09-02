@@ -48,6 +48,6 @@
         public bool? IsExplicitRead { get; set; } = false;
         public string IntroBucketName { get; set; }
         public string IntroVideoKey { get; set; }
-        public int AuditionType { get; set; } = 0;
+        public int AuditionType { get; set; } = 0;//ixExtendedRead=4(0x100), isShortRead=2(0x10), isCommercialRead=1
     }
 }
